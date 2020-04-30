@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mobile_navigation.xml"
+    app:startDestination="@+id/nav_home">
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="ym.nemo233.bookstore.ui.fragments.HomeFragment"
+        tools:layout="@layout/fragment_bookcase" />
+    <fragment
+        android:id="@+id/nav_bookstore"
+        android:name="ym.nemo233.bookstore.ui.fragments.BookstoreFragment"
+        tools:layout="@layout/fragment_bookstore" />
+    <fragment
+        android:id="@+id/nav_coll"
+        android:name="ym.nemo233.bookstore.ui.fragments.TreasureFragment"
+        tools:layout="@layout/fragment_bookstore" />
+</navigation>

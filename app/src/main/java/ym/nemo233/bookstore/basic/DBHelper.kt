@@ -1,15 +1,15 @@
 package ym.nemo233.bookstore.basic
 
-import ym.nemo233.bookstore.MyApp
-import ym.nemo233.bookstore.sqlite.PopularBooks
-import ym.nemo233.bookstore.sqlite.PopularBooksDao
-import ym.nemo233.bookstore.sqlite.WebsiteSource
+import ym.nemo233.bookstore.sqlite.*
 
 object DBHelper {
+    private var firstStartApp by Share(Share.FIRST_START_APP, true)
     //操作对象
     private val daoSession by lazy { MyApp.instance().daoMaster.newSession() }
     private val daoPopularBooks by lazy { daoSession.popularBooksDao }
     private val daoWebsiteSource by lazy { daoSession.websiteSourceDao }
+
+    private val booksSiteDao by lazy { daoSession.booksSiteDao }
 
     /**
      * 加载默认网站
@@ -62,5 +62,20 @@ object DBHelper {
 
     fun loadWebsites(): List<WebsiteSource> = daoWebsiteSource.loadAll()
 
+    /**
+     * 初始化数据库
+     */
+    fun initDatabases(firstStartApp: Boolean) {
+        if (firstStartApp) {
+            val data = BooksSite(0, "番茄小说", "http://www.fqxs.org", 100, true)
+            booksSiteDao.insertInTx(data)
+        }
+        this.firstStartApp = false
+    }
+
+    fun loadDefaultSite(): BooksSite? {
+        return booksSiteDao.queryBuilder().where(BooksSiteDao.Properties.DefaultSite.eq(true))
+            .unique()
+    }
 
 }

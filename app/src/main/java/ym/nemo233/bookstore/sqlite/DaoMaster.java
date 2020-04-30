@@ -21,16 +21,22 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
+        BooksInformationDao.createTable(db, ifNotExists);
         PopularBooksDao.createTable(db, ifNotExists);
         WebsiteSourceDao.createTable(db, ifNotExists);
-        BooksInformationDao.createTable(db, ifNotExists);
+        BooksSiteDao.createTable(db, ifNotExists);
+        BookcaseClassifyCacheDao.createTable(db, ifNotExists);
+        ParseRuleStepDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
+        BooksInformationDao.dropTable(db, ifExists);
         PopularBooksDao.dropTable(db, ifExists);
         WebsiteSourceDao.dropTable(db, ifExists);
-        BooksInformationDao.dropTable(db, ifExists);
+        BooksSiteDao.dropTable(db, ifExists);
+        BookcaseClassifyCacheDao.dropTable(db, ifExists);
+        ParseRuleStepDao.dropTable(db, ifExists);
     }
 
     /**
@@ -49,9 +55,12 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
+        registerDaoClass(BooksInformationDao.class);
         registerDaoClass(PopularBooksDao.class);
         registerDaoClass(WebsiteSourceDao.class);
-        registerDaoClass(BooksInformationDao.class);
+        registerDaoClass(BooksSiteDao.class);
+        registerDaoClass(BookcaseClassifyCacheDao.class);
+        registerDaoClass(ParseRuleStepDao.class);
     }
 
     public DaoSession newSession() {

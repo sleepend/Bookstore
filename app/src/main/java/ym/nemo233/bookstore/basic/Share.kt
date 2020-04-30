@@ -1,7 +1,6 @@
 package ym.nemo233.bookstore.basic
 
 import android.content.Context
-import ym.nemo233.bookstore.MyApp
 import java.io.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -76,6 +75,7 @@ class Share<T>(val name: String, val default: T) : ReadWriteProperty<Any?, T> {
 
     companion object {
 
+        const val FIRST_START_APP: String ="FIRST_START_APP"
         const val DEFAULT_BOOKSTORE_URL = "DEFAULT_BOOKSTORE_URL"
     }
 }

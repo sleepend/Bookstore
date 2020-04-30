@@ -3,7 +3,7 @@ package ym.nemo233.bookstore.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
-import ym.nemo233.bookstore.MyApp
+import ym.nemo233.bookstore.basic.MyApp
 
 /**
  * Created by Android on 2018/8/23.

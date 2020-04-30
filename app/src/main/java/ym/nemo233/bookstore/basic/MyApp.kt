@@ -1,9 +1,10 @@
-package ym.nemo233.bookstore
+package ym.nemo233.bookstore.basic
 
 import android.app.Application
 import android.content.Context
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import ym.nemo233.bookstore.BuildConfig
 import ym.nemo233.bookstore.sqlite.DaoMaster
 import ym.nemo233.framework.utils.L
 
@@ -14,6 +15,8 @@ class MyApp : Application() {
 
         fun instance() = app!!
     }
+
+    private val firstStartApp by Share(Share.FIRST_START_APP,true)
 
     /**
      * 数据库管理器
@@ -32,6 +35,10 @@ class MyApp : Application() {
         super.onCreate()
         app = this
         L.init(BuildConfig.DEBUG)
+    }
+
+    fun initData() {
+        DBHelper.initDatabases(firstStartApp)
     }
 
 
