@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:background="@color/theme" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/theme"
+        android:minHeight="40dp">
+
+        <ImageView
+            android:id="@+id/bd_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="4dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_back" />
+
+        <TextView
+            android:id="@+id/bd_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="5dp"
+            android:text="详情"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp">
+
+        <ImageView
+            android:id="@+id/bd_top_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/bd_photo"
+            android:layout_width="108dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/aaaaa"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/bd_book_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="2dp"
+            android:text="很纯很暧昧"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/bd_photo"
+            app:layout_constraintTop_toTopOf="@id/bd_photo" />
+
+        <TextView
+            android:id="@+id/bd_book_auth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            android:text="作者:忘记是谁"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/bd_book_name"
+            app:layout_constraintTop_toBottomOf="@+id/bd_book_name" />
+
+        <TextView
+            android:id="@+id/bd_book_classify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            android:text="分类:都市"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/bd_book_auth"
+            app:layout_constraintTop_toBottomOf="@+id/bd_book_auth" />
+
+        <TextView
+            android:id="@+id/bd_book_source"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_marginTop="4dp"
+            android:text="来源:www.baidu.com"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/bd_book_classify"
+            app:layout_constraintTop_toBottomOf="@+id/bd_book_classify" />
+
+        <TextView
+            android:id="@+id/bd_book_newest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            android:text="最新章节:"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/bd_book_source"
+            app:layout_constraintTop_toBottomOf="@+id/bd_book_source" />
+
+        <TextView
+            android:id="@+id/bd_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:background="@drawable/btn_org"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:minHeight="28dp"
+            android:padding="4dp"
+            android:text="开始阅读"
+            android:textColor="@color/theme_white"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="@id/bd_book_newest"
+            app:layout_constraintTop_toBottomOf="@+id/bd_book_newest" />
+
+        <TextView
+            android:id="@+id/bd_append"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/btn_org"
+            android:gravity="center"
+            android:minWidth="100dp"
+            android:minHeight="28dp"
+            android:padding="4dp"
+            android:text="加入书架"
+            android:textColor="@color/theme_white"
+            android:textSize="13sp"
+            app:layout_constraintStart_toEndOf="@+id/bd_start"
+            app:layout_constraintTop_toTopOf="@id/bd_start" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/theme" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="内容简介"
+        android:textColor="#333"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/bd_book_instr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="60dp"
+        android:paddingStart="12dp"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingEnd="12dp"
+        android:text=""
+        android:textSize="12sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/theme" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:text="最近更新"
+        android:textColor="#333"
+        android:textSize="12sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/bd_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none" />
+</LinearLayout>
