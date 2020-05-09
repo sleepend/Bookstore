@@ -24,9 +24,10 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
-        public final static Property RootUrl = new Property(2, String.class, "rootUrl", false, "ROOT_URL");
-        public final static Property DelayMill = new Property(3, Integer.class, "delayMill", false, "DELAY_MILL");
-        public final static Property DefaultSite = new Property(4, Boolean.class, "defaultSite", false, "DEFAULT_SITE");
+        public final static Property Decode = new Property(2, String.class, "decode", false, "DECODE");
+        public final static Property RootUrl = new Property(3, String.class, "rootUrl", false, "ROOT_URL");
+        public final static Property DelayMill = new Property(4, Integer.class, "delayMill", false, "DELAY_MILL");
+        public final static Property DefaultSite = new Property(5, Boolean.class, "defaultSite", false, "DEFAULT_SITE");
     }
 
     private DaoSession daoSession;
@@ -47,9 +48,10 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"BOOKS_SITE\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"NAME\" TEXT NOT NULL ," + // 1: name
-                "\"ROOT_URL\" TEXT NOT NULL ," + // 2: rootUrl
-                "\"DELAY_MILL\" INTEGER NOT NULL ," + // 3: delayMill
-                "\"DEFAULT_SITE\" INTEGER NOT NULL );"); // 4: defaultSite
+                "\"DECODE\" TEXT," + // 2: decode
+                "\"ROOT_URL\" TEXT NOT NULL ," + // 3: rootUrl
+                "\"DELAY_MILL\" INTEGER NOT NULL ," + // 4: delayMill
+                "\"DEFAULT_SITE\" INTEGER NOT NULL );"); // 5: defaultSite
     }
 
     /** Drops the underlying database table. */
@@ -67,9 +69,14 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getName());
-        stmt.bindString(3, entity.getRootUrl());
-        stmt.bindLong(4, entity.getDelayMill());
-        stmt.bindLong(5, entity.getDefaultSite() ? 1L: 0L);
+ 
+        String decode = entity.getDecode();
+        if (decode != null) {
+            stmt.bindString(3, decode);
+        }
+        stmt.bindString(4, entity.getRootUrl());
+        stmt.bindLong(5, entity.getDelayMill());
+        stmt.bindLong(6, entity.getDefaultSite() ? 1L: 0L);
     }
 
     @Override
@@ -81,9 +88,14 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getName());
-        stmt.bindString(3, entity.getRootUrl());
-        stmt.bindLong(4, entity.getDelayMill());
-        stmt.bindLong(5, entity.getDefaultSite() ? 1L: 0L);
+ 
+        String decode = entity.getDecode();
+        if (decode != null) {
+            stmt.bindString(3, decode);
+        }
+        stmt.bindString(4, entity.getRootUrl());
+        stmt.bindLong(5, entity.getDelayMill());
+        stmt.bindLong(6, entity.getDefaultSite() ? 1L: 0L);
     }
 
     @Override
@@ -102,9 +114,10 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
         BooksSite entity = new BooksSite( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // name
-            cursor.getString(offset + 2), // rootUrl
-            cursor.getInt(offset + 3), // delayMill
-            cursor.getShort(offset + 4) != 0 // defaultSite
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // decode
+            cursor.getString(offset + 3), // rootUrl
+            cursor.getInt(offset + 4), // delayMill
+            cursor.getShort(offset + 5) != 0 // defaultSite
         );
         return entity;
     }
@@ -113,9 +126,10 @@ public class BooksSiteDao extends AbstractDao<BooksSite, Long> {
     public void readEntity(Cursor cursor, BooksSite entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.getString(offset + 1));
-        entity.setRootUrl(cursor.getString(offset + 2));
-        entity.setDelayMill(cursor.getInt(offset + 3));
-        entity.setDefaultSite(cursor.getShort(offset + 4) != 0);
+        entity.setDecode(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setRootUrl(cursor.getString(offset + 3));
+        entity.setDelayMill(cursor.getInt(offset + 4));
+        entity.setDefaultSite(cursor.getShort(offset + 5) != 0);
      }
     
     @Override

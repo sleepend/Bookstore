@@ -10,20 +10,20 @@ object TestJsoup {
     @JvmStatic
     fun main(args: Array<String>) {
         val baseUrl = "http://www.fqxs.org"
-        val home = Jsoup.parse(URL(baseUrl).openStream(), "GBK", baseUrl)
+        val home = Jsoup.parse(URL(baseUrl).openStream(), "UTF-8", baseUrl)
         val nav = loadNavigation(home.body())
         //推荐列表
-        val recommends = loadRecommend(baseUrl, nav)//推荐目录
-//        //打开目录
-        val chapters = loadBookCatalogue(baseUrl, recommends.values.elementAt(1)[3])//测试用:第2分类,第四本书
-        //打开指定章节
-        val chapter = chapters[149]
-        openChapter(chapter)
-        println("${chapter.tag} ${chapter.url}\n ${chapter.content}")
-        //搜索
-        searchBook(baseUrl, "仙").forEach {
-            println("${it.name} | ${it.auth} \n${it.url}")
-        }
+//        val recommends = loadRecommend(baseUrl, nav)//推荐目录
+////        //打开目录
+//        val chapters = loadBookCatalogue(baseUrl, recommends.values.elementAt(1)[3])//测试用:第2分类,第四本书
+//        //打开指定章节
+//        val chapter = chapters[149]
+//        openChapter(chapter)
+//        println("${chapter.tag} ${chapter.url}\n ${chapter.content}")
+//        //搜索
+//        searchBook(baseUrl, "仙").forEach {
+//            println("${it.name} | ${it.auth} \n${it.url}")
+//        }
     }
 
     /**
@@ -134,6 +134,7 @@ object TestJsoup {
             for (i in 1..lis.size - 3) {
                 val li = lis[i].select("a[href]")
                 map[li.text()] = li.attr("href")
+                print("[log-nav]${li.text()} ${map[li.text()]}")
             }
         }
         return map

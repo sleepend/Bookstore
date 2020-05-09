@@ -58,6 +58,17 @@ public class BooksSite {
         this.defaultSite = defaultSite;
     }
 
+    @Generated(hash = 1468403740)
+    public BooksSite(Long id, @NotNull String name, String decode, @NotNull String rootUrl,
+            @NotNull Integer delayMill, @NotNull Boolean defaultSite) {
+        this.id = id;
+        this.name = name;
+        this.decode = decode;
+        this.rootUrl = rootUrl;
+        this.delayMill = delayMill;
+        this.defaultSite = defaultSite;
+    }
+
 
     public Long getId() {
         return this.id;
@@ -121,6 +132,16 @@ public class BooksSite {
             }
         }
         return classifyCaches;
+    }
+
+    public void putClassifyCaches(List<BookcaseClassifyCache> data) {
+        if (data == null) {
+            return;
+        }
+        this.daoSession.getBookcaseClassifyCacheDao().insertInTx(data);
+        if (classifyCaches == null) {
+            classifyCaches = data;
+        }
     }
 
     /**
@@ -209,5 +230,13 @@ public class BooksSite {
     @Generated(hash = 1639045204)
     public synchronized void resetParseRuleStepList() {
         parseRuleStepList = null;
+    }
+
+    public String getDecode() {
+        return this.decode;
+    }
+
+    public void setDecode(String decode) {
+        this.decode = decode;
     }
 }

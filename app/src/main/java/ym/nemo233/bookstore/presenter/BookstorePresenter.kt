@@ -3,11 +3,14 @@ package ym.nemo233.bookstore.presenter
 import ym.nemo233.bookstore.basic.BookstoreView
 import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.beans.PopularBookArray
+import ym.nemo233.bookstore.parse.SiteParseFactory
+import ym.nemo233.bookstore.parse.SiteParser
 import ym.nemo233.bookstore.sqlite.WebsiteSource
-import ym.nemo233.bookstore.utils.ParseUtils
 import ym.nemo233.framework.mvp.BasePresenter
 
 class BookstorePresenter(view: BookstoreView) : BasePresenter<BookstoreView>() {
+
+    private lateinit var siteParser: SiteParser
 
     init {
         attachView(view)
@@ -22,17 +25,23 @@ class BookstorePresenter(view: BookstoreView) : BasePresenter<BookstoreView>() {
     }
 
 
-    fun loadWebsites():List<WebsiteSource> = DBHelper.loadWebsites()
+    fun loadWebsites(): List<WebsiteSource> = DBHelper.loadWebsites()
 
     /**
      * 开始加载数据
      */
     fun loadData() {
-        val booksSite = DBHelper.loadDefaultSite()?:return
+        val booksSite = DBHelper.loadDefaultSite() ?: return
         mvpView?.onShowBooksSiteTitle(booksSite.name)
-        if(booksSite.needLoadBookcaseClassifyCache()){
+        siteParser = SiteParseFactory.create(booksSite)
+        if (booksSite.needLoadBookcaseClassifyCache()) {
             //加载网络数据
-            val data = ParseUtils.loadBookcaseClassify(booksSite)
+            Thread {
+                val data = siteParser.loadBookcaseClassify(booksSite)
+                booksSite.putClassifyCaches(data)
+            }.start()
+        } else {
+
         }
     }
 }
