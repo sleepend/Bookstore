@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.main_view.*
 import ym.nemo233.bookstore.basic.MainView
+import ym.nemo233.bookstore.basic.MyApp
 import ym.nemo233.bookstore.presenter.MainPresenter
 import ym.nemo233.framework.YMMVPActivity
 import ym.nemo233.framework.utils.L
@@ -34,6 +35,8 @@ class MainActivity : YMMVPActivity<MainPresenter>(), MainView {
         val navController = Navigation.findNavController(this, R.id.nav_host_fragment)
         setupActionBarWithNavController(navController, appBarConfiguration)
         nav_view.setupWithNavController(navController)
+        //
+        MyApp.instance().initData()
     }
 
     override fun onSupportNavigateUp(): Boolean {

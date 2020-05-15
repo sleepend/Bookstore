@@ -11,19 +11,27 @@ public class BooksInformation {
     private Long _id;
     private String name;
     private String auth;
+    private String instr;
+    private String imageUrl;
+    private Long classId;
+    private String className;
     private Boolean state; //书籍是否完结
     private Integer chapter;//章节
     private Integer pageNumber;//页码
     private String sourceUrl;//引用网页地址
     private Boolean isCache;//是否缓存整书
 
-    @Generated(hash = 515606093)
-    public BooksInformation(Long _id, String name, String auth, Boolean state,
-                            Integer chapter, Integer pageNumber, String sourceUrl,
-                            Boolean isCache) {
+    @Generated(hash = 396787671)
+    public BooksInformation(Long _id, String name, String auth, String instr, String imageUrl,
+            Long classId, String className, Boolean state, Integer chapter, Integer pageNumber,
+            String sourceUrl, Boolean isCache) {
         this._id = _id;
         this.name = name;
         this.auth = auth;
+        this.instr = instr;
+        this.imageUrl = imageUrl;
+        this.classId = classId;
+        this.className = className;
         this.state = state;
         this.chapter = chapter;
         this.pageNumber = pageNumber;
@@ -98,5 +106,37 @@ public class BooksInformation {
 
     public void setIsCache(Boolean isCache) {
         this.isCache = isCache;
+    }
+
+    public String getInstr() {
+        return this.instr;
+    }
+
+    public void setInstr(String instr) {
+        this.instr = instr;
+    }
+
+    public Long getClassId() {
+        return this.classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
+    }
+
+    public String getClassName() {
+        return this.className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getImageUrl() {
+        return this.imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

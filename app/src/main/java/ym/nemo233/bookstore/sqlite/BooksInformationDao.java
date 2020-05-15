@@ -25,11 +25,15 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         public final static Property _id = new Property(0, Long.class, "_id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property Auth = new Property(2, String.class, "auth", false, "AUTH");
-        public final static Property State = new Property(3, Boolean.class, "state", false, "STATE");
-        public final static Property Chapter = new Property(4, Integer.class, "chapter", false, "CHAPTER");
-        public final static Property PageNumber = new Property(5, Integer.class, "pageNumber", false, "PAGE_NUMBER");
-        public final static Property SourceUrl = new Property(6, String.class, "sourceUrl", false, "SOURCE_URL");
-        public final static Property IsCache = new Property(7, Boolean.class, "isCache", false, "IS_CACHE");
+        public final static Property Instr = new Property(3, String.class, "instr", false, "INSTR");
+        public final static Property ImageUrl = new Property(4, String.class, "imageUrl", false, "IMAGE_URL");
+        public final static Property ClassId = new Property(5, Long.class, "classId", false, "CLASS_ID");
+        public final static Property ClassName = new Property(6, String.class, "className", false, "CLASS_NAME");
+        public final static Property State = new Property(7, Boolean.class, "state", false, "STATE");
+        public final static Property Chapter = new Property(8, Integer.class, "chapter", false, "CHAPTER");
+        public final static Property PageNumber = new Property(9, Integer.class, "pageNumber", false, "PAGE_NUMBER");
+        public final static Property SourceUrl = new Property(10, String.class, "sourceUrl", false, "SOURCE_URL");
+        public final static Property IsCache = new Property(11, Boolean.class, "isCache", false, "IS_CACHE");
     }
 
 
@@ -48,11 +52,15 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: _id
                 "\"NAME\" TEXT," + // 1: name
                 "\"AUTH\" TEXT," + // 2: auth
-                "\"STATE\" INTEGER," + // 3: state
-                "\"CHAPTER\" INTEGER," + // 4: chapter
-                "\"PAGE_NUMBER\" INTEGER," + // 5: pageNumber
-                "\"SOURCE_URL\" TEXT," + // 6: sourceUrl
-                "\"IS_CACHE\" INTEGER);"); // 7: isCache
+                "\"INSTR\" TEXT," + // 3: instr
+                "\"IMAGE_URL\" TEXT," + // 4: imageUrl
+                "\"CLASS_ID\" INTEGER," + // 5: classId
+                "\"CLASS_NAME\" TEXT," + // 6: className
+                "\"STATE\" INTEGER," + // 7: state
+                "\"CHAPTER\" INTEGER," + // 8: chapter
+                "\"PAGE_NUMBER\" INTEGER," + // 9: pageNumber
+                "\"SOURCE_URL\" TEXT," + // 10: sourceUrl
+                "\"IS_CACHE\" INTEGER);"); // 11: isCache
     }
 
     /** Drops the underlying database table. */
@@ -80,29 +88,49 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(3, auth);
         }
  
+        String instr = entity.getInstr();
+        if (instr != null) {
+            stmt.bindString(4, instr);
+        }
+ 
+        String imageUrl = entity.getImageUrl();
+        if (imageUrl != null) {
+            stmt.bindString(5, imageUrl);
+        }
+ 
+        Long classId = entity.getClassId();
+        if (classId != null) {
+            stmt.bindLong(6, classId);
+        }
+ 
+        String className = entity.getClassName();
+        if (className != null) {
+            stmt.bindString(7, className);
+        }
+ 
         Boolean state = entity.getState();
         if (state != null) {
-            stmt.bindLong(4, state ? 1L: 0L);
+            stmt.bindLong(8, state ? 1L: 0L);
         }
  
         Integer chapter = entity.getChapter();
         if (chapter != null) {
-            stmt.bindLong(5, chapter);
+            stmt.bindLong(9, chapter);
         }
  
         Integer pageNumber = entity.getPageNumber();
         if (pageNumber != null) {
-            stmt.bindLong(6, pageNumber);
+            stmt.bindLong(10, pageNumber);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(7, sourceUrl);
+            stmt.bindString(11, sourceUrl);
         }
  
         Boolean isCache = entity.getIsCache();
         if (isCache != null) {
-            stmt.bindLong(8, isCache ? 1L: 0L);
+            stmt.bindLong(12, isCache ? 1L: 0L);
         }
     }
 
@@ -125,29 +153,49 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(3, auth);
         }
  
+        String instr = entity.getInstr();
+        if (instr != null) {
+            stmt.bindString(4, instr);
+        }
+ 
+        String imageUrl = entity.getImageUrl();
+        if (imageUrl != null) {
+            stmt.bindString(5, imageUrl);
+        }
+ 
+        Long classId = entity.getClassId();
+        if (classId != null) {
+            stmt.bindLong(6, classId);
+        }
+ 
+        String className = entity.getClassName();
+        if (className != null) {
+            stmt.bindString(7, className);
+        }
+ 
         Boolean state = entity.getState();
         if (state != null) {
-            stmt.bindLong(4, state ? 1L: 0L);
+            stmt.bindLong(8, state ? 1L: 0L);
         }
  
         Integer chapter = entity.getChapter();
         if (chapter != null) {
-            stmt.bindLong(5, chapter);
+            stmt.bindLong(9, chapter);
         }
  
         Integer pageNumber = entity.getPageNumber();
         if (pageNumber != null) {
-            stmt.bindLong(6, pageNumber);
+            stmt.bindLong(10, pageNumber);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(7, sourceUrl);
+            stmt.bindString(11, sourceUrl);
         }
  
         Boolean isCache = entity.getIsCache();
         if (isCache != null) {
-            stmt.bindLong(8, isCache ? 1L: 0L);
+            stmt.bindLong(12, isCache ? 1L: 0L);
         }
     }
 
@@ -162,11 +210,15 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // _id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // auth
-            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0, // state
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // chapter
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // pageNumber
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // sourceUrl
-            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0 // isCache
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // instr
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // imageUrl
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // classId
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // className
+            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // state
+            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // chapter
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // pageNumber
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // sourceUrl
+            cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0 // isCache
         );
         return entity;
     }
@@ -176,11 +228,15 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         entity.set_id(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setAuth(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setState(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
-        entity.setChapter(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setPageNumber(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setSourceUrl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setIsCache(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
+        entity.setInstr(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setImageUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setClassId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setClassName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setState(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
+        entity.setChapter(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
+        entity.setPageNumber(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setSourceUrl(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setIsCache(cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0);
      }
     
     @Override

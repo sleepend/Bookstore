@@ -5,6 +5,9 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Transient;
+
+import java.util.List;
 
 @Entity
 public class BookcaseClassifyCache {
@@ -14,6 +17,9 @@ public class BookcaseClassifyCache {
     private Long bsId;
     private String name;
     private String url;
+
+    @Transient
+    public List<BooksInformation> books;
 
     @Generated(hash = 1987884798)
     @Keep

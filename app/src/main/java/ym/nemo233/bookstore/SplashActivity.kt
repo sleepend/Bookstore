@@ -34,7 +34,6 @@ class SplashActivity : Activity() {
                 mHandler.sendEmptyMessage(countdown)
             }
         }.start()
-        MyApp.instance().initData()
     }
 
     override fun onBackPressed() {

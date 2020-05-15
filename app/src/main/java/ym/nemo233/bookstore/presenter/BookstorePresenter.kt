@@ -39,9 +39,24 @@ class BookstorePresenter(view: BookstoreView) : BasePresenter<BookstoreView>() {
             Thread {
                 val data = siteParser.loadBookcaseClassify(booksSite)
                 booksSite.putClassifyCaches(data)
+                //
+                booksSite.classifyCaches.forEach {
+                    it.books = siteParser.loadBooksByClassify(it)
+                }
+                mvpView?.onLoadClassify(booksSite.classifyCaches)
             }.start()
         } else {
-
+            Thread {
+                booksSite.classifyCaches.forEach {
+                    val books = DBHelper.loadBooksByClassify(it)
+                    if (books.isEmpty()) {
+                        it.books = siteParser.loadBooksByClassify(it)
+                    } else {
+                        it.books = books
+                    }
+                }
+                mvpView?.onLoadClassify(booksSite.classifyCaches)
+            }.start()
         }
     }
 }

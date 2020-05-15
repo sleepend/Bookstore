@@ -10,6 +10,7 @@ object DBHelper {
     private val daoWebsiteSource by lazy { daoSession.websiteSourceDao }
 
     private val booksSiteDao by lazy { daoSession.booksSiteDao }
+    private val booksInformationDao by lazy { daoSession.booksInformationDao }
 
     /**
      * 加载默认网站
@@ -76,6 +77,13 @@ object DBHelper {
     fun loadDefaultSite(): BooksSite? {
         return booksSiteDao.queryBuilder().where(BooksSiteDao.Properties.DefaultSite.eq(true))
             .unique()
+    }
+
+
+    fun loadBooksByClassify(classifyCache: BookcaseClassifyCache?): List<BooksInformation> {
+        classifyCache ?: return ArrayList()
+        return booksInformationDao.queryBuilder()
+            .where(BooksInformationDao.Properties.ClassId.eq(classifyCache.id)).build().list()
     }
 
 }
