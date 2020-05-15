@@ -13,7 +13,7 @@ object TestJsoup {
         val home = Jsoup.parse(URL(baseUrl).openStream(), "UTF-8", baseUrl)
         val nav = loadNavigation(home.body())
         //推荐列表
-//        val recommends = loadRecommend(baseUrl, nav)//推荐目录
+        val recommends = loadRecommend(baseUrl, nav)//推荐目录
 ////        //打开目录
 //        val chapters = loadBookCatalogue(baseUrl, recommends.values.elementAt(1)[3])//测试用:第2分类,第四本书
 //        //打开指定章节
