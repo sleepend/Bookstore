@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">bookstore</string>
+    <string name="bookcase">书栈</string>
+    <string name="store">书城</string>
+    <string name="other">其它</string>
 </resources>

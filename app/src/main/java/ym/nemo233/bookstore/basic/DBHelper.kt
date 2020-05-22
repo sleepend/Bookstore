@@ -1,6 +1,8 @@
 package ym.nemo233.bookstore.basic
 
 import ym.nemo233.bookstore.sqlite.*
+import ym.nemo233.bookstore.utils.Te
+import ym.nemo233.framework.utils.L
 
 object DBHelper {
     private var firstStartApp by Share(Share.FIRST_START_APP, true)
@@ -11,79 +13,73 @@ object DBHelper {
 
     private val booksSiteDao by lazy { daoSession.booksSiteDao }
     private val booksInformationDao by lazy { daoSession.booksInformationDao }
-
-    /**
-     * 加载默认网站
-     */
-    fun loadDefaultWebsite(): WebsiteSource {
-        val data = daoWebsiteSource.loadAll()
-        return if (data.isEmpty()) {
-            val temp = ArrayList<WebsiteSource>()
-            temp.add(WebsiteSource(null, "番茄小说", "http://www.fqxs.org", true))
-            daoWebsiteSource.insertInTx(temp)
-            temp[0]
-        } else {
-            data.singleOrNull { it.selected } ?: data[0]
-        }
-    }
-
-    /**
-     * 根据网站站点获取推荐信息
-     */
-    fun getPopBookByWebsite(website: String): List<PopularBooks> {
-        return daoPopularBooks.queryBuilder().where(PopularBooksDao.Properties.Website.eq(website))
-            .list()
-    }
-
-    fun checkPopularBooksIsEmpty(website: String): Boolean {
-        return daoPopularBooks.queryBuilder().where(PopularBooksDao.Properties.Website.eq(website))
-            .count() == 0L
-    }
-
-    /**
-     * 保存站点热门推荐
-     */
-    fun savePopularBooks(data: ArrayList<PopularBooks>) {
-        daoPopularBooks.insertInTx(data)
-    }
-
-    /**
-     * 分类加载推荐
-     */
-    fun loadPopularBooks(): LinkedHashMap<String, ArrayList<PopularBooks>> {
-        val data = LinkedHashMap<String, ArrayList<PopularBooks>>()
-        daoPopularBooks.loadAll().forEach { pb ->
-            if (!data.containsKey(pb.typeName)) {
-                data[pb.typeName] = ArrayList()
-            }
-            data[pb.typeName]?.add(pb)
-        }
-        return data
-    }
-
-    fun loadWebsites(): List<WebsiteSource> = daoWebsiteSource.loadAll()
+    private val chapterDao by lazy { daoSession.chapterDao }
+    private val bookcaseDao by lazy { daoSession.bookcaseDao }
 
     /**
      * 初始化数据库
      */
     fun initDatabases(firstStartApp: Boolean) {
-        if (firstStartApp) {
-            val data = BooksSite(0, "番茄小说", "http://www.fqxs.org", 100, true)
-            booksSiteDao.insertInTx(data)
+        if (!firstStartApp) return
+        Thread {
+            L.e("[log-init] 初始化数据库")
+            booksSiteDao.insert(BooksSite(null, "番茄小说", "UTF-8", "http://www.fqxs.org", 100, true))
+            booksSiteDao.insert(BooksSite(null, "番茄小说网", "GBK", "http://www.fqxsw.cc", 100, false))
+            this.firstStartApp = false
+        }.start()
+    }
+
+    fun loadDefaultSite(): BooksSite {
+        booksSiteDao.loadAll().forEach {
+            L.i("[log-site] ${Te.toString2(it)}")
         }
-        this.firstStartApp = false
+        return booksSiteDao.loadAll().first()
     }
 
-    fun loadDefaultSite(): BooksSite? {
-        return booksSiteDao.queryBuilder().where(BooksSiteDao.Properties.DefaultSite.eq(true))
-            .unique()
+    fun loadBookSite(): List<BooksSite>? {
+        return booksSiteDao.loadAll()
     }
 
-
-    fun loadBooksByClassify(classifyCache: BookcaseClassifyCache?): List<BooksInformation> {
-        classifyCache ?: return ArrayList()
-        return booksInformationDao.queryBuilder()
-            .where(BooksInformationDao.Properties.ClassId.eq(classifyCache.id)).build().list()
+    fun hasInsertBookcase(booksInformation: BooksInformation): Boolean {
+        val count = bookcaseDao.queryBuilder().where(
+            BookcaseDao.Properties.Tag.eq(booksInformation.name + booksInformation.auth)
+        ).count()
+        return count > 0
     }
+
+    fun loadBookcase(): List<Bookcase> =
+        bookcaseDao.queryBuilder().orderAsc(BookcaseDao.Properties.Sort).list()
+
+    fun loadChapterByBook(book: BooksInformation): Chapter {
+        return chapterDao.queryBuilder().where(
+            ChapterDao.Properties.BiId.eq(book._id)
+        ).limit(1).offset(0).unique()
+    }
+
+    fun insertChapters(data: List<Chapter>) {
+        chapterDao.insertInTx(data)
+    }
+
+    /**
+     * 添加到书架
+     */
+    fun appendToBookstore(
+        booksInformation: BooksInformation,
+        chapter: Chapter
+    ) {
+        val count = bookcaseDao.count()
+        bookcaseDao.insertInTx(
+            Bookcase(
+                null,
+                booksInformation.name + booksInformation.auth,
+                booksInformation.name,
+                count.toInt(),
+                chapter.name,
+                -1, 0, 0,
+                booksInformation._id
+            )
+        )
+    }
+
 
 }

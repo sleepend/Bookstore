@@ -30,6 +30,9 @@ public class L {
     public static void v(String content) {
         log(TAG, content, 'v');
     }
+    public static void v(String tag,String content) {
+        log(tag, content, 'v');
+    }
 
     public static void i(String content) {
         log(TAG, content, 'i');

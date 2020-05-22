@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 
@@ -16,6 +17,7 @@ abstract class YMFragment : Fragment(), YMBaseInterface {
 
     lateinit var mActivity: FragmentActivity
     lateinit var mContext: Context
+    lateinit var rootView: FrameLayout
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,24 +26,23 @@ abstract class YMFragment : Fragment(), YMBaseInterface {
     ): View {
         mActivity = activity!!
         mContext = activity!!
+        rootView = FrameLayout(context)
+        rootView.addView(inflater.inflate(getLayoutId(), container, false))
         initializeBefore()
-        return inflater.inflate(getLayoutId(), container, false)
+        return rootView
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         initView()
         bindEvent()
+        firstRequest()
     }
 
     override fun initializeBefore() = Unit
     override fun bindEvent() = Unit
     override fun firstRequest() = Unit
 
-    override fun onStart() {
-        super.onStart()
-        firstRequest()
-    }
 
     fun hideSortKeyboard(view: View) {
         (mActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager).let {

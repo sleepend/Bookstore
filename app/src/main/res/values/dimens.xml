@@ -7,4 +7,5 @@
     <dimen name="dp32">32dp</dimen>
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp48">48dp</dimen>
+    <dimen name="dp12">12dp</dimen>
 </resources>

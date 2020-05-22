@@ -5,14 +5,10 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCC" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
+        android:background="@drawable/lines_btm"
         android:orientation="horizontal">
 
         <TextView
@@ -25,15 +21,17 @@
             android:paddingStart="12dp"
             android:paddingEnd="@dimen/dp_4"
             android:text="玄幻小说"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/item_bs_more"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
             android:gravity="center"
             android:minWidth="64dp"
+            android:padding="6dp"
             android:text="更多>>"
             android:textSize="12sp" />
     </LinearLayout>
@@ -129,6 +127,7 @@
     <View
         android:id="@+id/item_layout_5"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_40"
-        android:visibility="gone" />
+        android:layout_height="@dimen/dp8"
+        android:layout_marginTop="4dp"
+        android:background="#ededed" />
 </LinearLayout>

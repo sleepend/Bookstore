@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "315779248063",
+    "firebase_url": "https://bookstore-9d8bc.firebaseio.com",
+    "project_id": "bookstore-9d8bc",
+    "storage_bucket": "bookstore-9d8bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315779248063:android:afb73f9a8ee8116cbe3b0a",
+        "android_client_info": {
+          "package_name": "ym.nemo233.bookstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315779248063-9ut1e82dq95iucccj1v3u837mv7tbnle.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCIXjJeWOQF-uicts77utKt_ExS9NCuOE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315779248063-9ut1e82dq95iucccj1v3u837mv7tbnle.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

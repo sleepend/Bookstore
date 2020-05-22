@@ -29,12 +29,14 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         public final static Property ImageUrl = new Property(4, String.class, "imageUrl", false, "IMAGE_URL");
         public final static Property ClassId = new Property(5, Long.class, "classId", false, "CLASS_ID");
         public final static Property ClassName = new Property(6, String.class, "className", false, "CLASS_NAME");
-        public final static Property State = new Property(7, Boolean.class, "state", false, "STATE");
-        public final static Property Chapter = new Property(8, Integer.class, "chapter", false, "CHAPTER");
-        public final static Property PageNumber = new Property(9, Integer.class, "pageNumber", false, "PAGE_NUMBER");
-        public final static Property SourceUrl = new Property(10, String.class, "sourceUrl", false, "SOURCE_URL");
-        public final static Property IsCache = new Property(11, Boolean.class, "isCache", false, "IS_CACHE");
+        public final static Property Status = new Property(7, String.class, "status", false, "STATUS");
+        public final static Property SourceUrl = new Property(8, String.class, "sourceUrl", false, "SOURCE_URL");
+        public final static Property BaseUrl = new Property(9, String.class, "baseUrl", false, "BASE_URL");
+        public final static Property ContentSize = new Property(10, String.class, "contentSize", false, "CONTENT_SIZE");
+        public final static Property Upt = new Property(11, String.class, "upt", false, "UPT");
     }
+
+    private DaoSession daoSession;
 
 
     public BooksInformationDao(DaoConfig config) {
@@ -43,6 +45,7 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
     
     public BooksInformationDao(DaoConfig config, DaoSession daoSession) {
         super(config, daoSession);
+        this.daoSession = daoSession;
     }
 
     /** Creates the underlying database table. */
@@ -56,11 +59,11 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
                 "\"IMAGE_URL\" TEXT," + // 4: imageUrl
                 "\"CLASS_ID\" INTEGER," + // 5: classId
                 "\"CLASS_NAME\" TEXT," + // 6: className
-                "\"STATE\" INTEGER," + // 7: state
-                "\"CHAPTER\" INTEGER," + // 8: chapter
-                "\"PAGE_NUMBER\" INTEGER," + // 9: pageNumber
-                "\"SOURCE_URL\" TEXT," + // 10: sourceUrl
-                "\"IS_CACHE\" INTEGER);"); // 11: isCache
+                "\"STATUS\" TEXT," + // 7: status
+                "\"SOURCE_URL\" TEXT," + // 8: sourceUrl
+                "\"BASE_URL\" TEXT," + // 9: baseUrl
+                "\"CONTENT_SIZE\" TEXT," + // 10: contentSize
+                "\"UPT\" TEXT);"); // 11: upt
     }
 
     /** Drops the underlying database table. */
@@ -108,29 +111,29 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(7, className);
         }
  
-        Boolean state = entity.getState();
-        if (state != null) {
-            stmt.bindLong(8, state ? 1L: 0L);
-        }
- 
-        Integer chapter = entity.getChapter();
-        if (chapter != null) {
-            stmt.bindLong(9, chapter);
-        }
- 
-        Integer pageNumber = entity.getPageNumber();
-        if (pageNumber != null) {
-            stmt.bindLong(10, pageNumber);
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(8, status);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(11, sourceUrl);
+            stmt.bindString(9, sourceUrl);
         }
  
-        Boolean isCache = entity.getIsCache();
-        if (isCache != null) {
-            stmt.bindLong(12, isCache ? 1L: 0L);
+        String baseUrl = entity.getBaseUrl();
+        if (baseUrl != null) {
+            stmt.bindString(10, baseUrl);
+        }
+ 
+        String contentSize = entity.getContentSize();
+        if (contentSize != null) {
+            stmt.bindString(11, contentSize);
+        }
+ 
+        String upt = entity.getUpt();
+        if (upt != null) {
+            stmt.bindString(12, upt);
         }
     }
 
@@ -173,30 +176,36 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(7, className);
         }
  
-        Boolean state = entity.getState();
-        if (state != null) {
-            stmt.bindLong(8, state ? 1L: 0L);
-        }
- 
-        Integer chapter = entity.getChapter();
-        if (chapter != null) {
-            stmt.bindLong(9, chapter);
-        }
- 
-        Integer pageNumber = entity.getPageNumber();
-        if (pageNumber != null) {
-            stmt.bindLong(10, pageNumber);
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(8, status);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(11, sourceUrl);
+            stmt.bindString(9, sourceUrl);
         }
  
-        Boolean isCache = entity.getIsCache();
-        if (isCache != null) {
-            stmt.bindLong(12, isCache ? 1L: 0L);
+        String baseUrl = entity.getBaseUrl();
+        if (baseUrl != null) {
+            stmt.bindString(10, baseUrl);
         }
+ 
+        String contentSize = entity.getContentSize();
+        if (contentSize != null) {
+            stmt.bindString(11, contentSize);
+        }
+ 
+        String upt = entity.getUpt();
+        if (upt != null) {
+            stmt.bindString(12, upt);
+        }
+    }
+
+    @Override
+    protected final void attachEntity(BooksInformation entity) {
+        super.attachEntity(entity);
+        entity.__setDaoSession(daoSession);
     }
 
     @Override
@@ -214,11 +223,11 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // imageUrl
             cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // classId
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // className
-            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // state
-            cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8), // chapter
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // pageNumber
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // sourceUrl
-            cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0 // isCache
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // status
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceUrl
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // baseUrl
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // contentSize
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // upt
         );
         return entity;
     }
@@ -232,11 +241,11 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         entity.setImageUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setClassId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
         entity.setClassName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setState(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
-        entity.setChapter(cursor.isNull(offset + 8) ? null : cursor.getInt(offset + 8));
-        entity.setPageNumber(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setSourceUrl(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setIsCache(cursor.isNull(offset + 11) ? null : cursor.getShort(offset + 11) != 0);
+        entity.setStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setSourceUrl(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setBaseUrl(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setContentSize(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setUpt(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
      }
     
     @Override

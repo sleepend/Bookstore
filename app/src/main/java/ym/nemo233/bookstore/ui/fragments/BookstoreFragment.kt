@@ -5,19 +5,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_bookcase.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookstoreView
+import ym.nemo233.bookstore.basic.toast
 import ym.nemo233.bookstore.beans.PopularBookArray
 import ym.nemo233.bookstore.presenter.BookstorePresenter
 import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
 import ym.nemo233.bookstore.ui.activity.BookDetailsActivity
 import ym.nemo233.bookstore.ui.adapter.BookstoreAdapter
 import ym.nemo233.framework.YMMVPFragment
-import ym.nemo233.framework.utils.L
 
 /**
  * 书城
  */
 class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
-    private val adapter by lazy { BookstoreAdapter() }
+    private val adapter by lazy { BookstoreAdapter(activity!!) }
 
     override fun getLayoutId(): Int = R.layout.fragment_bookcase
     override fun createPresenter(): BookstorePresenter? = BookstorePresenter(this)
@@ -28,36 +28,32 @@ class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
         recycler.itemAnimator = DefaultItemAnimator()
         adapter.bindToRecyclerView(recycler)
         adapter.setOnItemChildClickListener { adapter, view, position ->
-            val data = adapter.data[position] as PopularBookArray
+            val data = adapter.data[position] as BookcaseClassifyCache
             when (view.id) {
-                R.id.item_layout_1 -> BookDetailsActivity.skipTo(mContext, data.data[0])
-                R.id.item_layout_2 -> BookDetailsActivity.skipTo(mContext, data.data[1])
-                R.id.item_layout_3 -> BookDetailsActivity.skipTo(mContext, data.data[2])
-                R.id.item_layout_4 -> BookDetailsActivity.skipTo(mContext, data.data[3])
+                R.id.item_layout_1 -> BookDetailsActivity.skipTo(mContext, data.books[0])
+                R.id.item_layout_2 -> BookDetailsActivity.skipTo(mContext, data.books[1])
+                R.id.item_layout_3 -> BookDetailsActivity.skipTo(mContext, data.books[2])
+                R.id.item_layout_4 -> BookDetailsActivity.skipTo(mContext, data.books[3])
                 R.id.item_bs_more -> {
-
+                    //启动分类
                 }
             }
         }
+
     }
 
     override fun firstRequest() {
         super.firstRequest()
-        mvp?.loadData()
+        mvp?.loadData(mActivity)
+    }
+
+    override fun onLoadFailed() {
+        //加载失败
+        toast("连接失败")
     }
 
     override fun onLoadClassify(data: List<BookcaseClassifyCache>?) {
-        L.e("[log-size]${data?.size}")
-        data?.forEach {
-            L.e("[log-size]${it.name}\t\t${it.url}")
-        }
-        activity?.runOnUiThread {
-            adapter.setNewData(data!!)
-        }
-    }
-
-    override fun onShowBooksSiteTitle(booksSiteName: String) {
-
+        adapter.setNewData(data)
     }
 
     override fun onLoadBookstore(data: List<PopularBookArray>) {

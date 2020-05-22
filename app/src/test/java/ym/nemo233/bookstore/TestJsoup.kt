@@ -15,7 +15,7 @@ object TestJsoup {
         //推荐列表
         val recommends = loadRecommend(baseUrl, nav)//推荐目录
 ////        //打开目录
-//        val chapters = loadBookCatalogue(baseUrl, recommends.values.elementAt(1)[3])//测试用:第2分类,第四本书
+        val chapters = loadBookCatalogue(baseUrl, recommends.values.elementAt(1)[3])//测试用:第2分类,第四本书
 //        //打开指定章节
 //        val chapter = chapters[149]
 //        openChapter(chapter)

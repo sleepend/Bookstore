@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 public class BooksSite {
-    @Id
+    @Id(autoincrement = true)
     private Long id;
     @NotNull
     private String name;
@@ -26,9 +26,6 @@ public class BooksSite {
 
     @ToMany(referencedJoinProperty = "bsId")
     private List<BookcaseClassifyCache> classifyCaches;
-
-    @ToMany(referencedJoinProperty = "bsId")
-    private List<ParseRuleStep> parseRuleStepList;
 
     /**
      * Used to resolve relations
@@ -44,18 +41,6 @@ public class BooksSite {
     @Generated(hash = 1786018598)
     @Keep
     public BooksSite() {
-    }
-
-    @Generated(hash = 918041370)
-    @Keep
-    public BooksSite(@NotNull Long id, @NotNull String name,
-                     @NotNull String rootUrl, @NotNull Integer delayMill,
-                     @NotNull Boolean defaultSite) {
-        this.id = id;
-        this.name = name;
-        this.rootUrl = rootUrl;
-        this.delayMill = delayMill;
-        this.defaultSite = defaultSite;
     }
 
     @Generated(hash = 1468403740)
@@ -139,7 +124,7 @@ public class BooksSite {
             return;
         }
         this.daoSession.getBookcaseClassifyCacheDao().insertInTx(data);
-        if (classifyCaches == null) {
+        if (classifyCaches ==null || classifyCaches.isEmpty()) {
             classifyCaches = data;
         }
     }
@@ -195,41 +180,6 @@ public class BooksSite {
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getBooksSiteDao() : null;
-    }
-
-    public boolean needLoadBookcaseClassifyCache() {
-        return getClassifyCaches().isEmpty();
-    }
-
-    /**
-     * To-many relationship, resolved on first access (and after reset).
-     * Changes to to-many relations are not persisted, make changes to the target entity.
-     */
-    @Generated(hash = 628758063)
-    public List<ParseRuleStep> getParseRuleStepList() {
-        if (parseRuleStepList == null) {
-            final DaoSession daoSession = this.daoSession;
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            ParseRuleStepDao targetDao = daoSession.getParseRuleStepDao();
-            List<ParseRuleStep> parseRuleStepListNew = targetDao
-                    ._queryBooksSite_ParseRuleStepList(id);
-            synchronized (this) {
-                if (parseRuleStepList == null) {
-                    parseRuleStepList = parseRuleStepListNew;
-                }
-            }
-        }
-        return parseRuleStepList;
-    }
-
-    /**
-     * Resets a to-many relationship, making the next get call to query for a fresh result.
-     */
-    @Generated(hash = 1639045204)
-    public synchronized void resetParseRuleStepList() {
-        parseRuleStepList = null;
     }
 
     public String getDecode() {

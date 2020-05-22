@@ -4,16 +4,28 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
-
-
-
+    <View
+        android:layout_width="match_parent"
+        android:background="@color/theme"
+        android:layout_height="@dimen/dp24"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp48"
+        android:background="@color/theme">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="16sp"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:drawableEnd="@mipmap/drop_down_white"
+            android:drawablePadding="4dp"
+            android:text="书城"/>
+    </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-<!--    <ExpandableListView-->
-<!--        android:id="@+id/expand"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"/>-->
 </LinearLayout>
