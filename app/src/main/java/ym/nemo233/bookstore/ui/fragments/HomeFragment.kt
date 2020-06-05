@@ -8,6 +8,7 @@ import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookcaseView
 import ym.nemo233.bookstore.presenter.BookcasePresenter
 import ym.nemo233.bookstore.sqlite.Bookcase
+import ym.nemo233.bookstore.ui.activity.ReaderActivity
 import ym.nemo233.bookstore.ui.activity.SearchActivity
 import ym.nemo233.bookstore.ui.adapter.BookcaseAdapter
 import ym.nemo233.framework.YMMVPFragment
@@ -28,6 +29,7 @@ class HomeFragment : YMMVPFragment<BookcasePresenter>(), BookcaseView {
         adapter.bindToRecyclerView(home_recycler)
         adapter.setOnItemClickListener { adapter, _, position ->
             val item = adapter.getItem(position) as Bookcase
+            ReaderActivity.skipTo(mContext,item)
         }
     }
 

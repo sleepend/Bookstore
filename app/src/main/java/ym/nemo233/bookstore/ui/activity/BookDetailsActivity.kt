@@ -43,20 +43,23 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
     @SuppressLint("SetTextI18n")
     override fun initView() {
         L.d("[log] ${Te.toString(booksInformation)}")
+
+        bd_recycler.layoutManager = LinearLayoutManager(this)
+        bd_recycler.adapter = adapter
+        bd_recycler.itemAnimator = DefaultItemAnimator()
     }
 
     override fun bindEvent() {
         super.bindEvent()
-        bd_recycler.layoutManager = LinearLayoutManager(this)
-        bd_recycler.adapter = adapter
-        bd_recycler.itemAnimator = DefaultItemAnimator()
-
         bd_back.setOnClickListener { finish() }
         bd_append.setOnClickListener {
             if (it.tag == null) {
                 it.tag = 1
                 mvp?.addToBookcase(this@BookDetailsActivity, booksInformation)
             }
+        }
+        bd_start.setOnClickListener {
+            //开始阅读
         }
     }
 

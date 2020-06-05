@@ -1,5 +1,8 @@
 package ym.nemo233.bookstore.sqlite;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.DaoException;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
@@ -9,7 +12,7 @@ import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Unique;
 
 @Entity
-public class Bookcase {
+public class Bookcase implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
 
@@ -56,6 +59,55 @@ public class Bookcase {
         this.cacheState = cacheState;
         this.biId = biId;
     }
+
+    protected Bookcase(Parcel in) {
+        if (in.readByte() == 0) {
+            id = null;
+        } else {
+            id = in.readLong();
+        }
+        tag = in.readString();
+        name = in.readString();
+        if (in.readByte() == 0) {
+            sort = null;
+        } else {
+            sort = in.readInt();
+        }
+        newest = in.readString();
+        if (in.readByte() == 0) {
+            chapter = null;
+        } else {
+            chapter = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            pageNumber = null;
+        } else {
+            pageNumber = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            cacheState = null;
+        } else {
+            cacheState = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            biId = null;
+        } else {
+            biId = in.readLong();
+        }
+        book = in.readParcelable(BooksInformation.class.getClassLoader());
+    }
+
+    public static final Creator<Bookcase> CREATOR = new Creator<Bookcase>() {
+        @Override
+        public Bookcase createFromParcel(Parcel in) {
+            return new Bookcase(in);
+        }
+
+        @Override
+        public Bookcase[] newArray(int size) {
+            return new Bookcase[size];
+        }
+    };
 
     public Long getId() {
         return this.id;
@@ -210,4 +262,52 @@ public class Bookcase {
         this.cacheState = cacheState;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(id);
+        }
+        dest.writeString(tag);
+        dest.writeString(name);
+        if (sort == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(sort);
+        }
+        dest.writeString(newest);
+        if (chapter == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(chapter);
+        }
+        if (pageNumber == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(pageNumber);
+        }
+        if (cacheState == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(cacheState);
+        }
+        if (biId == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(biId);
+        }
+        dest.writeParcelable(book, flags);
+    }
 }

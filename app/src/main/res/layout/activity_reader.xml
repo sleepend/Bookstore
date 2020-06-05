@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ym.nemo233.bookstore.widget.ContentSwitchView
+        android:id="@+id/book_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/test_text"
+        android:layout_width="wrap_content"
+        android:textColor="#FF0"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/reader_top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp40"
+        android:visibility="gone"
+        android:background="@drawable/line_grey_btm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/reader_tb_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="专业的"
+            android:textColor="#555"
+            android:textSize="13sp" />
+
+        <ImageView
+            android:id="@+id/reader_tb_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="4dp"
+            android:src="@drawable/ic_back" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/reader_btm"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@drawable/line_grey_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/reader_pre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:minWidth="72dp"
+            android:minHeight="@dimen/dp32"
+            android:padding="4dp"
+            android:text="上一页"
+            android:textColor="@color/reader_next_or_pre"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/reader_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:minWidth="72dp"
+            android:minHeight="@dimen/dp32"
+            android:padding="4dp"
+            android:text="下一页"
+            android:textColor="@color/reader_next_or_pre"
+            android:textSize="12sp" />
+
+        <ProgressBar
+            android:id="@+id/reader_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_toStartOf="@+id/reader_next"
+            android:layout_toEndOf="@+id/reader_pre"
+            android:enabled="false"
+            android:progress="24" />
+
+        <RadioGroup
+            android:id="@+id/reader_btm_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reader_pre"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:weightSum="5">
+
+            <RadioButton
+                android:id="@+id/reader_btm_dir"
+                style="@style/rb"
+                android:drawableTop="@drawable/ic_catalogue"
+                android:text="目录" />
+
+            <RadioButton
+                android:id="@+id/reader_btm_cache"
+                style="@style/rb"
+                android:drawableTop="@drawable/ic_download"
+                android:text="缓存" />
+
+            <RadioButton
+                android:id="@+id/reader_btm_mod"
+                style="@style/rb"
+                android:drawableTop="@drawable/ic_night"
+                android:text="夜间" />
+
+            <RadioButton
+                android:id="@+id/reader_btm_set"
+                style="@style/rb"
+                android:drawableTop="@drawable/ic_settings"
+                android:text="设置" />
+
+            <RadioButton
+                android:id="@+id/reader_btm_about"
+                style="@style/rb"
+                android:drawableTop="@drawable/ic_about"
+                android:text="关于" />
+
+        </RadioGroup>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

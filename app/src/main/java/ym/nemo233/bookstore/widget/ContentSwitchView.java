@@ -61,6 +61,8 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
         void showOrHideMenu(boolean isShowMenu);
 
         void loadData(BookContentView bookContentView, int durChapterIndex, int durPageIndex);
+
+        void noChapter(int durChapterIndex, int chapterAll);
     }
 
     public ContentSwitchView(@NonNull Context context) {
@@ -433,40 +435,44 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
         }
     }
 
-    public void moveToPreChapter() {
+    public int getCurrentChapterIndex() {
+        return durPageView.getDurChapterIndex();
+    }
+
+    public void moveToPreChapter(int pageAll) {
         if (state == PRE_AND_NEXT || state == ONLY_PRE) {
             if (null != bookReadInitListener) {
-                int durChapterIndex = durPageView.getDurChapterIndex() > 0 ? durPageView.getDurChapterIndex() - 1 : 0;
-                bookReadInitListener.loadData(durPageView, durChapterIndex, 0);
-                if (durChapterIndex == 0) {
-                    state = ONLY_NEXT;
+                if (durPageView.getDurChapterIndex() > 0) {
+                    int durChapterIndex = durPageView.getDurChapterIndex() - 1;
+                    bookReadInitListener.loadData(durPageView, durChapterIndex, 0);
+                    updateOtherPage(durPageView.getDurChapterIndex(), durPageView.getChapterAll(), 0, pageAll);
                 } else {
-                    state = PRE_AND_NEXT;
+                    state = ONLY_NEXT;
                 }
-                updateOtherPage(durChapterIndex, durPageView.getChapterAll(), 0, -1);
+                bookReadInitListener.noChapter(durPageView.getDurChapterIndex(), durPageView.getChapterAll());
             }
         } else {
             if (null != bookReadInitListener) {
-                bookReadInitListener.noPrePage();
+                bookReadInitListener.noChapter(durPageView.getDurChapterIndex(), durPageView.getChapterAll());
             }
         }
     }
 
-    public void moveToNextChapter() {
+    public void moveToNextChapter(int pageAll) {
         if (state == PRE_AND_NEXT || state == ONLY_NEXT) {
             if (null != bookReadInitListener) {
-                int durChapterIndex = durPageView.getDurChapterIndex() >= durPageView.getChapterAll() - 1 ? durPageView.getChapterAll() - 1 : durPageView.getDurChapterIndex() + 1;
-                bookReadInitListener.loadData(durPageView, durChapterIndex, 0);
-                if (durChapterIndex >= durPageView.getChapterAll() - 1) {
-                    state = ONLY_PRE;
+                if (durPageView.getDurChapterIndex() < durPageView.getChapterAll() - 1) {
+                    int durChapterIndex = durPageView.getDurChapterIndex() + 1;
+                    bookReadInitListener.loadData(durPageView, durChapterIndex, 0);
+                    updateOtherPage(durChapterIndex, durPageView.getChapterAll(), 0, pageAll);
                 } else {
-                    state = PRE_AND_NEXT;
+                    state = ONLY_PRE;
                 }
-                updateOtherPage(durChapterIndex, durPageView.getChapterAll(), 0, -1);
+                bookReadInitListener.noChapter(durPageView.getDurChapterIndex(), durPageView.getChapterAll());
             }
         } else {
             if (null != bookReadInitListener) {
-                bookReadInitListener.noNextPage();
+                bookReadInitListener.noChapter(durPageView.getDurChapterIndex(), durPageView.getChapterAll());
             }
         }
     }
@@ -485,9 +491,11 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
         }
     }
 
-    private void updateOtherPage(int durChapterIndex, int chapterAll, int durPageIndex, int pageAll) {
+    private void updateOtherPage(int durChapterIndex, int chapterAll, int durPageIndex, int pageAll) {// 0/6 0/8
+        Log.i("[log-position]", String.format("state=%d | durChapterIndex in %d/%d | page in %d/%d", state, durChapterIndex, chapterAll, durPageIndex, pageAll));
         if (chapterAll > 1 || pageAll > 1) {
             if ((durChapterIndex == 0 && pageAll == -1) || (durChapterIndex == 0 && durPageIndex == 0 && pageAll != -1)) {
+                Log.i("[log-position]", "加载next page");
                 addNextPage(durChapterIndex, chapterAll, durPageIndex, pageAll);
                 if (state == ONLY_PRE || state == PRE_AND_NEXT) {
                     this.removeView(viewContents.get(0));
@@ -496,6 +504,7 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
                 state = ONLY_NEXT;
             } else if ((durChapterIndex == chapterAll - 1 && pageAll == -1) || (durChapterIndex == chapterAll - 1 && durPageIndex == pageAll - 1 && pageAll != -1)) {
                 //ONLYPRE
+                Log.i("[log-position]", "加载pre page");
                 addPrePage(durChapterIndex, chapterAll, durPageIndex, pageAll);
                 if (state == ONLY_NEXT || state == PRE_AND_NEXT) {
                     this.removeView(viewContents.get(2));
@@ -504,6 +513,7 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
                 state = ONLY_PRE;
             } else {
                 //PREANDNEXT
+                Log.i("[log-position]", "加载 pre and next page");
                 addNextPage(durChapterIndex, chapterAll, durPageIndex, pageAll);
                 addPrePage(durChapterIndex, chapterAll, durPageIndex, pageAll);
                 state = PRE_AND_NEXT;
@@ -539,7 +549,7 @@ public class ContentSwitchView extends FrameLayout implements BookContentView.Bo
         bookReadInitListener.initData(durPageView.getLineCount(durHeight));
     }
 
-    public int getLineCount(){
+    public int getLineCount() {
         return durPageView.getLineCount(durHeight);
     }
 

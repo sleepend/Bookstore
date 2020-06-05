@@ -5,6 +5,10 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.NotNull;
+import org.greenrobot.greendao.annotation.Transient;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Chapter {
@@ -16,6 +20,9 @@ public class Chapter {
     private String name;
     private String url;
     private String content;
+
+    @Transient
+    public ArrayList<List<String>> data = new ArrayList<>();
 
     @Generated(hash = 393170288)
     @Keep

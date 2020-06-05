@@ -9,6 +9,7 @@ import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
 import ym.nemo233.bookstore.sqlite.BooksInformation
 import ym.nemo233.bookstore.sqlite.BooksSite
 import ym.nemo233.bookstore.sqlite.Chapter
+import ym.nemo233.bookstore.utils.Te
 import ym.nemo233.framework.utils.L
 import java.net.URL
 
@@ -194,7 +195,8 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
                     DBHelper.insertChapters(data)
                     data.clear()
                 }
-                if (lst.size == index + 1) {
+                L.d("[log-last] $index - ${lst.size}")
+                if (lst.size == index + 16) {//前15章被删除之
                     last = item
                 }
             }// else 无用章节

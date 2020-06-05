@@ -27,6 +27,17 @@ class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
         recycler.adapter = adapter
         recycler.itemAnimator = DefaultItemAnimator()
         adapter.bindToRecyclerView(recycler)
+        bookcase_swipe.setColorSchemeResources(
+            android.R.color.holo_blue_bright,
+            android.R.color.holo_green_light,
+            android.R.color.holo_red_light,
+            android.R.color.holo_orange_light
+        )
+    }
+
+
+    override fun bindEvent() {
+        super.bindEvent()
         adapter.setOnItemChildClickListener { adapter, view, position ->
             val data = adapter.data[position] as BookcaseClassifyCache
             when (view.id) {
@@ -39,24 +50,29 @@ class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
                 }
             }
         }
-
+        bookcase_swipe.setOnRefreshListener {
+            mvp?.loadData(mActivity)
+        }
     }
 
     override fun firstRequest() {
         super.firstRequest()
-        mvp?.loadData(mActivity)
+        bookcase_swipe.post {
+            bookcase_swipe.isRefreshing = true
+            mvp?.loadData(mActivity)
+        }
     }
 
     override fun onLoadFailed() {
         //加载失败
         toast("连接失败")
+        bookcase_swipe.isRefreshing = false
     }
 
     override fun onLoadClassify(data: List<BookcaseClassifyCache>?) {
         adapter.setNewData(data)
+        bookcase_swipe.isRefreshing = false
     }
 
-    override fun onLoadBookstore(data: List<PopularBookArray>) {
 
-    }
 }
