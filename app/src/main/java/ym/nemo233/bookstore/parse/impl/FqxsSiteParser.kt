@@ -1,15 +1,16 @@
 package ym.nemo233.bookstore.parse.impl
 
+import android.os.Looper
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.basic.MyApp
+import ym.nemo233.bookstore.beans.TempBook
 import ym.nemo233.bookstore.parse.SiteParser
 import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
 import ym.nemo233.bookstore.sqlite.BooksInformation
 import ym.nemo233.bookstore.sqlite.BooksSite
 import ym.nemo233.bookstore.sqlite.Chapter
-import ym.nemo233.bookstore.utils.Te
 import ym.nemo233.framework.utils.L
 import java.net.URL
 
@@ -53,11 +54,11 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
     /**
      * 根据分类,加载分类推荐
      */
-    override fun loadBooksByClassify(classifyCache: BookcaseClassifyCache): List<BooksInformation> {
-        val result = ArrayList<BooksInformation>()
+    override fun loadBooksByClassify(classifyCache: BookcaseClassifyCache) {
         L.v(TAG, "url = ${classifyCache.url}")
         val doc = Jsoup.parse(URL(classifyCache.url).openStream(), DECODE, classifyCache.url)
-        doc.getElementById("hotcontent").select("div[class=item]").forEach { item ->
+        val lst = doc.getElementById("hotcontent").select("div[class=item]")
+        classifyCache.books = lst.map { item ->
             val imgTag = item.getElementsByTag("img")
             val img = imgTag.attr("src")
             val dt = item.getElementsByTag("dt")
@@ -71,96 +72,87 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
                 }
                 it
             }
-
-            val instr = item.getElementsByTag("dd").text()
-            result.add(
-                BooksInformation(
-                    null,
-                    name,
-                    auth,
-                    instr,
-                    booksSite.rootUrl + img,
-                    classifyCache.id,
-                    classifyCache.name,
-                    "",
-                    booksSite.rootUrl + url,
-                    booksSite.rootUrl,
-                    "",
-                    ""
-                )
+            val imgUrl = if (img.startsWith("http")) {
+                img
+            } else {
+                booksSite.rootUrl + img
+            }
+            TempBook(
+                name = name,
+                auth = auth,
+                imageUrl = imgUrl,
+                classifyName = classifyCache.name,
+                sourceUrl = booksSite.rootUrl + url,
+                site = booksSite.rootUrl,
+                isSearchResult = false
             )
         }
-        classifyCache.books = result
-        return result
     }
 
-    /**
-     * 加载详情&最新章节
-     */
-    override fun loadNewestChapter(
-        booksInformation: BooksInformation,
-        chapterSize: Int
-    ): ArrayList<Chapter> {
-        val data = ArrayList<Chapter>()
+    override fun loadBookInformation(tempBook: TempBook): BooksInformation? {
         try {
             val doc = Jsoup.parse(
-                URL(booksInformation.sourceUrl).openStream(),
+                URL(tempBook.sourceUrl).openStream(),
                 DECODE,
-                booksInformation.sourceUrl
+                tempBook.sourceUrl
             )
             val body = doc.body()
+            L.d("[log-loadBookInformation] ${tempBook.sourceUrl}")
+            val booksInformation = BooksInformation()
+            //加载书籍相关信息
+            val intro = body.getElementById("intro")
+            val info = body.getElementById("info")
+            val pTag = info.getElementsByTag("p")
+            booksInformation._id = null
+            booksInformation.name = info.getElementsByTag("h1").text()
+            booksInformation.auth = pTag[0].text().split("：")[1]
+            booksInformation.instr = intro.getElementsByTag("p")[0].text()
 
-            val tags = body.getElementById("info").getElementsByTag("p")
+            val imgTag = body.getElementById("fmimg").getElementsByTag("img").attr("src")
+            booksInformation.imageUrl =
+                if (imgTag.startsWith("http")) imgTag else booksSite.rootUrl + imgTag
+            booksInformation.className = tempBook.classifyName
+            booksInformation.status = pTag[1].text().split("：")[1]
+            booksInformation.sourceUrl = tempBook.sourceUrl
+            booksInformation.baseUrl = tempBook.site
+            booksInformation.upt = pTag[2].text()
 
-            booksInformation.status = tags[1].text().split("：")[1]
-            booksInformation.upt = tags[2].text()
-            if (booksInformation.isSearchResult) {
-                //因为搜索结果无图片,所以需要重新加载
-                val imgTag = body.getElementById("fmimg").getElementsByTag("img")
-                booksInformation.imageUrl = booksSite.rootUrl + imgTag.attr("src")
-                booksInformation.instr =
-                    body.getElementById("intro").getElementsByTag("p")[0].text()
-                booksInformation.baseUrl = booksSite.rootUrl
+            if (tempBook.isSearchResult) {
                 //加载类型
                 val classifyTag = body.getElementsByClass("con_top")[0].getElementsByTag("a")[1]
                 val classify = loadBookcaseClassify()?.singleOrNull {
                     it.url == booksSite.rootUrl + classifyTag.attr("href")
                 }
                 classify?.let {
-                    booksInformation.classId = it.id
                     booksInformation.className = it.name
                 }
             }
-
-            body.getElementById("list").select("dd").take(15).forEach { dd ->
+            val lst = body.getElementById("list").select("dd").take(15)
+            booksInformation.chapters = lst.map { dd ->
                 val href = dd.select("a[href]")
                 val tag = href.text()
                 val url = href.attr("href")
                 if (url.startsWith("http")) {
-                    data.add(Chapter(null, booksInformation._id, tag, tag, url, ""))
+                    Chapter(null, booksInformation._id, tag, tag, url, "")
                 } else {
-                    data.add(
-                        Chapter(
-                            null,
-                            booksInformation._id,
-                            tag,
-                            tag,
-                            booksSite.rootUrl + url,
-                            ""
-                        )
-                    )
+                    Chapter(null, booksInformation._id, tag, tag, booksSite.rootUrl + url, "")
                 }
             }
+            return booksInformation
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return data
+        return null
     }
 
     /**
-     * 缓存目录
+     * 加载缓存目录
+     * 耗时操作,需要开启异步任务
      */
-    override fun cacheChapters(booksInformation: BooksInformation): Boolean {
+    override fun loadChaptersCache(booksInformation: BooksInformation): Boolean {
+        if (Thread.currentThread() == Looper.getMainLooper().thread) {
+            throw Exception("cannot run on the main thread.")
+        }
         try {
             val doc = Jsoup.parse(
                 URL(booksInformation.sourceUrl).openStream(),
@@ -168,43 +160,22 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
                 booksInformation.sourceUrl
             )
             val body = doc.body()
-            val data = ArrayList<Chapter>()
-            var last = Chapter()
             booksInformation.__setDaoSession(MyApp.instance().daoSession)
             booksInformation.insert()
-            L.v(TAG,"[log] biId = ${booksInformation._id}")
             val lst = body.getElementById("list").select("dd")
-            lst.takeLast(lst.size - 15).forEachIndexed { index, dd ->
+            val data = lst.takeLast(lst.size - 15).mapIndexed { index, dd ->
                 val href = dd.select("a[href]")
                 val name = href.text()
                 val url = href.attr("href")
-                val item = if (url.startsWith("http")) {
+                if (url.startsWith("http")) {
                     Chapter(null, booksInformation._id, "$index", name, url, "")
                 } else {
-                    Chapter(
-                        null,
-                        booksInformation._id,
-                        "$index",
-                        name,
-                        booksSite.rootUrl + url,
-                        ""
-                    )
+                    Chapter(null, booksInformation._id, "$index", name, booksSite.rootUrl + url, "")
                 }
-                data.add(item)
-                if (index % 50 == 0) {
-                    DBHelper.insertChapters(data)
-                    data.clear()
-                }
-                L.d("[log-last] $index - ${lst.size}")
-                if (lst.size == index + 16) {//前15章被删除之
-                    last = item
-                }
-            }// else 无用章节
-            if (data.isNotEmpty()) {
-                DBHelper.insertChapters(data)
             }
-            DBHelper.appendToBookstore(booksInformation, last)
-            return data.size > 0
+            DBHelper.insertChapters(data)
+            DBHelper.appendToBookstore(booksInformation, data.last())
+            return data.isNotEmpty()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -222,8 +193,7 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
     /**
      * 搜索
      */
-    override fun searchBook(bookName: String): List<BooksInformation>? {
-        val result = ArrayList<BooksInformation>()
+    override fun searchBook(bookName: String): List<TempBook>? {
         val url = "${booksSite.rootUrl}/modules/article/search.php"
         val headers = HashMap<String, String>()
         headers["Accept"] =
@@ -251,23 +221,14 @@ class FqxsSiteParser(private val booksSite: BooksSite) : SiteParser {
                 val name = href.text()
                 val url = href.attr("href")
                 val auth = li.select("span[class=s4]").text()
-                BooksInformation(
-                    null,
-                    name,
-                    auth,
-                    "",
-                    "",
-                    0,
-                    booksSite.name,
-                    "status",
+                TempBook(
+                    name, auth, "", "",
                     booksSite.rootUrl + url,
-                    booksSite.rootUrl,
-                    "",
-                    ""
+                    booksSite.rootUrl, true
                 )
             }
         }
-        return result
+        return null
     }
 
 }

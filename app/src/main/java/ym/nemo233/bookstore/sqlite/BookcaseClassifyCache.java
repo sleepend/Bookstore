@@ -9,6 +9,8 @@ import org.greenrobot.greendao.annotation.Transient;
 
 import java.util.List;
 
+import ym.nemo233.bookstore.beans.TempBook;
+
 @Entity
 public class BookcaseClassifyCache {
     @Id(autoincrement = true)
@@ -19,7 +21,7 @@ public class BookcaseClassifyCache {
     private String url;
 
     @Transient
-    public List<BooksInformation> books;
+    public List<TempBook> books;
 
     @Generated(hash = 1987884798)
     @Keep

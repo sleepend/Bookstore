@@ -10,20 +10,18 @@ import kotlinx.android.synthetic.main.activity_book_details.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookDetailsView
 import ym.nemo233.bookstore.basic.loadUrl
+import ym.nemo233.bookstore.beans.TempBook
 import ym.nemo233.bookstore.presenter.BookDetailsPresenter
 import ym.nemo233.bookstore.sqlite.BooksInformation
-import ym.nemo233.bookstore.sqlite.Chapter
 import ym.nemo233.bookstore.ui.adapter.ChapterAdapter
 import ym.nemo233.bookstore.utils.BlurTransform
-import ym.nemo233.bookstore.utils.Te
 import ym.nemo233.framework.YMMVPActivity
-import ym.nemo233.framework.utils.L
 
 /**
  *
  */
 class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsView {
-    private val booksInformation by lazy { intent.getParcelableExtra(BOOK_DETAILS) as BooksInformation }
+    private val tempBook by lazy { intent.getSerializableExtra(TEMP_BOOK) as TempBook }
 
     private val adapter by lazy { ChapterAdapter() }
 
@@ -32,18 +30,16 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
     override fun createPresenter(): BookDetailsPresenter? = BookDetailsPresenter(this)
 
     companion object {
-        private const val BOOK_DETAILS = "BOOK_DETAILS"
-        fun skipTo(context: Context, booksInfo: BooksInformation) {
+        private const val TEMP_BOOK = "TEMP_BOOK"
+        fun skipTo(context: Context, tempBook: TempBook) {
             val intent = Intent(context, BookDetailsActivity::class.java)
-            intent.putExtra(BOOK_DETAILS, booksInfo)
+            intent.putExtra(TEMP_BOOK, tempBook)
             context.startActivity(intent)
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun initView() {
-        L.d("[log] ${Te.toString(booksInformation)}")
-
         bd_recycler.layoutManager = LinearLayoutManager(this)
         bd_recycler.adapter = adapter
         bd_recycler.itemAnimator = DefaultItemAnimator()
@@ -55,7 +51,7 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
         bd_append.setOnClickListener {
             if (it.tag == null) {
                 it.tag = 1
-                mvp?.addToBookcase(this@BookDetailsActivity, booksInformation)
+                mvp?.addToBookcase()
             }
         }
         bd_start.setOnClickListener {
@@ -65,12 +61,11 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
 
     override fun firstRequest() {
         super.firstRequest()
-        mvp?.loadBookDetails(booksInformation)
+        mvp?.loadBookDetails(tempBook)
     }
 
     @SuppressLint("SetTextI18n")
     override fun onUpdateBookInfo(booksInformation: BooksInformation) {
-        L.v("[log-search] ${Te.toString(booksInformation)}")
         runOnUiThread {
             bd_book_name.text = booksInformation.name
             bd_book_auth.text = booksInformation.auth
@@ -81,20 +76,22 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
             bd_photo.loadUrl(booksInformation.imageUrl)
             val options = RequestOptions.bitmapTransform(BlurTransform(this, 12f))
             bd_top_bg.loadUrl(booksInformation.imageUrl, options)
+            bd_book_newest.text = "最新章节: ${booksInformation.chapters.first()?.name}"
+            //
+            adapter.setNewData(booksInformation.chapters)
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onLoadBookChapters(chapters: List<Chapter>?) {
-        runOnUiThread {
-            bd_book_newest.text = "最新章节: ${chapters?.first()?.name}"
-            adapter.setNewData(chapters)
-        }
+    override fun onLoadError() {
+        //加载失败
+
     }
 
     override fun onAddToBookcase(result: Boolean) {
-        bd_append.isEnabled = !result
-        bd_append.tag = null
+        runOnUiThread {
+            bd_append.isEnabled = !result
+            bd_append.tag = null
+        }
     }
 
 }

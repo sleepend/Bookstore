@@ -1,5 +1,6 @@
 package ym.nemo233.bookstore.basic
 
+import ym.nemo233.bookstore.beans.TempBook
 import ym.nemo233.bookstore.sqlite.Bookcase
 import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
 import ym.nemo233.bookstore.sqlite.BooksInformation
@@ -24,11 +25,14 @@ interface BookstoreView {
 }
 
 interface BookDetailsView {
-    fun onLoadBookChapters(chapters: List<Chapter>?)
     fun onAddToBookcase(result: Boolean)
     fun onUpdateBookInfo(booksInformation: BooksInformation)
+    /**
+     * 加载失败
+     */
+    fun onLoadError()
 }
 
 interface SearchBooksView {
-    fun onResultBySearch(result: List<BooksInformation>?)
+    fun onResultBySearch(result: List<TempBook>?)
 }

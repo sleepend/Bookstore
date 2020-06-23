@@ -20,7 +20,6 @@ public class BooksInformation implements Parcelable {
     private String auth;
     private String instr;
     private String imageUrl;
-    private Long classId;
     private String className;
     private String status; //状态
     private String sourceUrl;//引用网页地址
@@ -48,23 +47,6 @@ public class BooksInformation implements Parcelable {
     @Generated(hash = 192652385)
     private transient BooksInformationDao myDao;
 
-    @Generated(hash = 129445660)
-    public BooksInformation(Long _id, String name, String auth, String instr, String imageUrl, Long classId,
-                            String className, String status, String sourceUrl, String baseUrl, String contentSize, String upt) {
-        this._id = _id;
-        this.name = name;
-        this.auth = auth;
-        this.instr = instr;
-        this.imageUrl = imageUrl;
-        this.classId = classId;
-        this.className = className;
-        this.status = status;
-        this.sourceUrl = sourceUrl;
-        this.baseUrl = baseUrl;
-        this.contentSize = contentSize;
-        this.upt = upt;
-    }
-
     protected BooksInformation(Parcel in) {
         if (in.readByte() == 0) {
             _id = null;
@@ -75,17 +57,28 @@ public class BooksInformation implements Parcelable {
         auth = in.readString();
         instr = in.readString();
         imageUrl = in.readString();
-        if (in.readByte() == 0) {
-            classId = null;
-        } else {
-            classId = in.readLong();
-        }
         className = in.readString();
         status = in.readString();
         sourceUrl = in.readString();
         baseUrl = in.readString();
         contentSize = in.readString();
         upt = in.readString();
+    }
+
+    @Generated(hash = 2085685177)
+    public BooksInformation(Long _id, String name, String auth, String instr, String imageUrl, String className, String status,
+            String sourceUrl, String baseUrl, String contentSize, String upt) {
+        this._id = _id;
+        this.name = name;
+        this.auth = auth;
+        this.instr = instr;
+        this.imageUrl = imageUrl;
+        this.className = className;
+        this.status = status;
+        this.sourceUrl = sourceUrl;
+        this.baseUrl = baseUrl;
+        this.contentSize = contentSize;
+        this.upt = upt;
     }
 
     public static final Creator<BooksInformation> CREATOR = new Creator<BooksInformation>() {
@@ -140,14 +133,6 @@ public class BooksInformation implements Parcelable {
         this.instr = instr;
     }
 
-    public Long getClassId() {
-        return this.classId;
-    }
-
-    public void setClassId(Long classId) {
-        this.classId = classId;
-    }
-
     public String getClassName() {
         return this.className;
     }
@@ -188,10 +173,6 @@ public class BooksInformation implements Parcelable {
         this.status = status;
     }
 
-    public boolean isSearchResult() {
-        return instr.isEmpty() && imageUrl.isEmpty();
-    }
-
     public String getBaseUrl() {
         return this.baseUrl;
     }
@@ -220,6 +201,16 @@ public class BooksInformation implements Parcelable {
             }
         }
         return chapters;
+    }
+
+    /**
+     * 临时存储,不写入到数据库中
+     *
+     * @param chapters
+     */
+    @Keep
+    public void setChapters(List<Chapter> chapters) {
+        this.chapters = chapters;
     }
 
     /**
@@ -302,12 +293,6 @@ public class BooksInformation implements Parcelable {
         dest.writeString(auth);
         dest.writeString(instr);
         dest.writeString(imageUrl);
-        if (classId == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeLong(classId);
-        }
         dest.writeString(className);
         dest.writeString(status);
         dest.writeString(sourceUrl);

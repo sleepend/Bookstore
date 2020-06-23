@@ -1,8 +1,16 @@
 package ym.nemo233.bookstore.beans
 
-import ym.nemo233.bookstore.sqlite.PopularBooks
+import java.io.Serializable
 
 /**
- * 列表的临时对象
+ * 书城返回的临时对象
  */
-data class PopularBookArray(val type: String, val data: ArrayList<PopularBooks>)
+data class TempBook(
+    val name: String,
+    val auth: String,
+    val imageUrl: String,
+    val classifyName: String,
+    val sourceUrl: String,
+    val site: String,
+    val isSearchResult:Boolean
+) : Serializable

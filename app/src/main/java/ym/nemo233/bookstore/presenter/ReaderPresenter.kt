@@ -28,9 +28,7 @@ class ReaderPresenter(view: ReaderView) : BasePresenter<ReaderView>() {
             bookcase.book.__setDaoSession(MyApp.instance().daoSession)
             val durChapterIndex = if (bookcase.chapter < 0) 0 else bookcase.chapter
             val chapter = bookcase.book.chapters[durChapterIndex]
-            L.i("[log-reader] ${Te.toString2(chapter)}")
             siteParser.loadChapter(chapter)
-            L.i("[log-reader-II] ${Te.toString2(chapter)}")
             val durPageIndex = if (bookcase.pageNumber < 0) 0 else bookcase.pageNumber
             mvpView?.onLoadBookByBookcase(
                 chapter,
@@ -80,6 +78,11 @@ class ReaderPresenter(view: ReaderView) : BasePresenter<ReaderView>() {
                 }
             }
         }
+    }
+
+    fun loadChapter(durChapterIndex: Int): Chapter? {
+
+        return null
     }
 
 }

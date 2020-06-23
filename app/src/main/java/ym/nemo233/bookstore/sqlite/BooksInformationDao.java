@@ -27,13 +27,12 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         public final static Property Auth = new Property(2, String.class, "auth", false, "AUTH");
         public final static Property Instr = new Property(3, String.class, "instr", false, "INSTR");
         public final static Property ImageUrl = new Property(4, String.class, "imageUrl", false, "IMAGE_URL");
-        public final static Property ClassId = new Property(5, Long.class, "classId", false, "CLASS_ID");
-        public final static Property ClassName = new Property(6, String.class, "className", false, "CLASS_NAME");
-        public final static Property Status = new Property(7, String.class, "status", false, "STATUS");
-        public final static Property SourceUrl = new Property(8, String.class, "sourceUrl", false, "SOURCE_URL");
-        public final static Property BaseUrl = new Property(9, String.class, "baseUrl", false, "BASE_URL");
-        public final static Property ContentSize = new Property(10, String.class, "contentSize", false, "CONTENT_SIZE");
-        public final static Property Upt = new Property(11, String.class, "upt", false, "UPT");
+        public final static Property ClassName = new Property(5, String.class, "className", false, "CLASS_NAME");
+        public final static Property Status = new Property(6, String.class, "status", false, "STATUS");
+        public final static Property SourceUrl = new Property(7, String.class, "sourceUrl", false, "SOURCE_URL");
+        public final static Property BaseUrl = new Property(8, String.class, "baseUrl", false, "BASE_URL");
+        public final static Property ContentSize = new Property(9, String.class, "contentSize", false, "CONTENT_SIZE");
+        public final static Property Upt = new Property(10, String.class, "upt", false, "UPT");
     }
 
     private DaoSession daoSession;
@@ -57,13 +56,12 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
                 "\"AUTH\" TEXT," + // 2: auth
                 "\"INSTR\" TEXT," + // 3: instr
                 "\"IMAGE_URL\" TEXT," + // 4: imageUrl
-                "\"CLASS_ID\" INTEGER," + // 5: classId
-                "\"CLASS_NAME\" TEXT," + // 6: className
-                "\"STATUS\" TEXT," + // 7: status
-                "\"SOURCE_URL\" TEXT," + // 8: sourceUrl
-                "\"BASE_URL\" TEXT," + // 9: baseUrl
-                "\"CONTENT_SIZE\" TEXT," + // 10: contentSize
-                "\"UPT\" TEXT);"); // 11: upt
+                "\"CLASS_NAME\" TEXT," + // 5: className
+                "\"STATUS\" TEXT," + // 6: status
+                "\"SOURCE_URL\" TEXT," + // 7: sourceUrl
+                "\"BASE_URL\" TEXT," + // 8: baseUrl
+                "\"CONTENT_SIZE\" TEXT," + // 9: contentSize
+                "\"UPT\" TEXT);"); // 10: upt
     }
 
     /** Drops the underlying database table. */
@@ -101,39 +99,34 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(5, imageUrl);
         }
  
-        Long classId = entity.getClassId();
-        if (classId != null) {
-            stmt.bindLong(6, classId);
-        }
- 
         String className = entity.getClassName();
         if (className != null) {
-            stmt.bindString(7, className);
+            stmt.bindString(6, className);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(8, status);
+            stmt.bindString(7, status);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(9, sourceUrl);
+            stmt.bindString(8, sourceUrl);
         }
  
         String baseUrl = entity.getBaseUrl();
         if (baseUrl != null) {
-            stmt.bindString(10, baseUrl);
+            stmt.bindString(9, baseUrl);
         }
  
         String contentSize = entity.getContentSize();
         if (contentSize != null) {
-            stmt.bindString(11, contentSize);
+            stmt.bindString(10, contentSize);
         }
  
         String upt = entity.getUpt();
         if (upt != null) {
-            stmt.bindString(12, upt);
+            stmt.bindString(11, upt);
         }
     }
 
@@ -166,39 +159,34 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             stmt.bindString(5, imageUrl);
         }
  
-        Long classId = entity.getClassId();
-        if (classId != null) {
-            stmt.bindLong(6, classId);
-        }
- 
         String className = entity.getClassName();
         if (className != null) {
-            stmt.bindString(7, className);
+            stmt.bindString(6, className);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(8, status);
+            stmt.bindString(7, status);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(9, sourceUrl);
+            stmt.bindString(8, sourceUrl);
         }
  
         String baseUrl = entity.getBaseUrl();
         if (baseUrl != null) {
-            stmt.bindString(10, baseUrl);
+            stmt.bindString(9, baseUrl);
         }
  
         String contentSize = entity.getContentSize();
         if (contentSize != null) {
-            stmt.bindString(11, contentSize);
+            stmt.bindString(10, contentSize);
         }
  
         String upt = entity.getUpt();
         if (upt != null) {
-            stmt.bindString(12, upt);
+            stmt.bindString(11, upt);
         }
     }
 
@@ -221,13 +209,12 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // auth
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // instr
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // imageUrl
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5), // classId
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // className
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // status
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceUrl
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // baseUrl
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // contentSize
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // upt
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // className
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // status
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // sourceUrl
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // baseUrl
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // contentSize
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10) // upt
         );
         return entity;
     }
@@ -239,13 +226,12 @@ public class BooksInformationDao extends AbstractDao<BooksInformation, Long> {
         entity.setAuth(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setInstr(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setImageUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setClassId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
-        entity.setClassName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setStatus(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setSourceUrl(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setBaseUrl(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setContentSize(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setUpt(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setClassName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setSourceUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setBaseUrl(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setContentSize(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setUpt(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
      }
     
     @Override

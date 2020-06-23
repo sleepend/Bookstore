@@ -63,10 +63,7 @@ object DBHelper {
     /**
      * 添加到书架
      */
-    fun appendToBookstore(
-        booksInformation: BooksInformation,
-        chapter: Chapter
-    ) {
+    fun appendToBookstore(booksInformation: BooksInformation, chapter: Chapter) {
         val count = bookcaseDao.count()
         bookcaseDao.insertInTx(
             Bookcase(

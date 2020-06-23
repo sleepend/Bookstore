@@ -86,9 +86,6 @@ class ReaderActivity : YMMVPActivity<ReaderPresenter>(), ReaderView,
         } else {
 
         }
-//        data.forEach {
-//            it.splitContent(book_content, lineCount)
-//        }
     }
 
     override fun getChapterTitle(chapterIndex: Int): String {
@@ -128,6 +125,18 @@ class ReaderActivity : YMMVPActivity<ReaderPresenter>(), ReaderView,
         durChapterIndex: Int,
         durPageIndex: Int
     ) {
+        L.d("[log-]$durChapterIndex | $durPageIndex")
+        val chapter = mvp?.loadChapter(durChapterIndex)
+        if(chapter==null) {
+            bookContentView.loadError()
+        }else {
+            val content = when(durPageIndex){
+                ContentSwitchView.DURPAGEINDEXBEGIN->chapter.data[0]
+                ContentSwitchView.DURPAGEINDEXEND->chapter.data.last()
+                else->chapter.data[durPageIndex]
+            }
+            bookContentView.updateData(chapter.name,content,durChapterIndex,1000,durPageIndex,chapter.data.size)
+        }
 //        val pageIndex = when (durPageIndex) {
 //            ContentSwitchView.DURPAGEINDEXBEGIN -> 0//向下一页
 //            ContentSwitchView.DURPAGEINDEXEND -> data[durChapterIndex].data.size - 1//向上

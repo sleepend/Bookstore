@@ -6,7 +6,6 @@ import kotlinx.android.synthetic.main.fragment_bookcase.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookstoreView
 import ym.nemo233.bookstore.basic.toast
-import ym.nemo233.bookstore.beans.PopularBookArray
 import ym.nemo233.bookstore.presenter.BookstorePresenter
 import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
 import ym.nemo233.bookstore.ui.activity.BookDetailsActivity
