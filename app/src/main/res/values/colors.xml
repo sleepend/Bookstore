@@ -8,4 +8,5 @@
     <color name="grey">#CCC</color>
     <color name="theme">#663</color>
     <color name="grey666">#666</color>
+    <color name="lines_border">#663</color>
 </resources>

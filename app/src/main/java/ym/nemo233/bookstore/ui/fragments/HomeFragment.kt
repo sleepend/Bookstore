@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookcaseView
 import ym.nemo233.bookstore.presenter.BookcasePresenter
-import ym.nemo233.bookstore.sqlite.Bookcase
+import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.ui.activity.ReaderActivity
 import ym.nemo233.bookstore.ui.activity.SearchActivity
 import ym.nemo233.bookstore.ui.adapter.BookcaseAdapter
@@ -28,8 +28,8 @@ class HomeFragment : YMMVPFragment<BookcasePresenter>(), BookcaseView {
         home_recycler.itemAnimator = DefaultItemAnimator()
         adapter.bindToRecyclerView(home_recycler)
         adapter.setOnItemClickListener { adapter, _, position ->
-            val item = adapter.getItem(position) as Bookcase
-            ReaderActivity.skipTo(mContext,item)
+            val item = adapter.getItem(position) as BookInformation
+            ReaderActivity.skipTo(mContext, item)
         }
     }
 
@@ -52,7 +52,7 @@ class HomeFragment : YMMVPFragment<BookcasePresenter>(), BookcaseView {
         }
     }
 
-    override fun onLoadBookcase(data: List<Bookcase>) {
+    override fun onLoadBookcase(data: List<BookInformation>) {
         adapter.setNewData(data)
     }
 }

@@ -1,31 +1,35 @@
 package ym.nemo233.bookstore.parse
 
-import ym.nemo233.bookstore.beans.TempBook
-import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
-import ym.nemo233.bookstore.sqlite.BooksInformation
+import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.Chapter
+import ym.nemo233.bookstore.sqlite.WebSite
 
 interface SiteParser {
     /**
+     * 返回默认书城编号
+     */
+    fun getWebSiteId(): Long
+
+    /**
      * 加载书城分类
      */
-    fun loadBookcaseClassify(): List<BookcaseClassifyCache>?
+    fun loadBookcaseClassify(): List<WebSite>?
 
     /**
      * 解析分类获得列表
      */
-    fun loadBooksByClassify(classifyCache: BookcaseClassifyCache)
+    fun loadBooksByClassify(webSite: WebSite): List<BookInformation>?
 
     /**
      * 加载详情&最新章节
      */
-    fun loadBookInformation(tempBook: TempBook): BooksInformation?
+    fun loadBookInformation(bookInformation: BookInformation)
 
     /**
      * 缓存目录
      * @return 最新章节
      */
-    fun loadChaptersCache(booksInformation: BooksInformation): Boolean
+    fun loadChaptersCache(bookInformation: BookInformation): Boolean
 
     /**
      * 解析章节
@@ -35,6 +39,6 @@ interface SiteParser {
     /**
      * 搜索
      */
-    fun searchBook(bookName: String): List<TempBook>?
+    fun searchBook(bookName: String): List<BookInformation>?
 
 }

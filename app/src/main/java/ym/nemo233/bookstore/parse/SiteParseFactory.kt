@@ -2,17 +2,17 @@ package ym.nemo233.bookstore.parse
 
 import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.parse.impl.FqxsSiteParser
-import ym.nemo233.bookstore.sqlite.BooksSite
+import ym.nemo233.bookstore.sqlite.WebSite
 
 object SiteParseFactory {
 
     private var siteParser: SiteParser? = null
 
-    fun create(booksSite: BooksSite): SiteParser {
-        siteParser = when (booksSite.rootUrl) {
-            "http://www.fqxs.org" -> FqxsSiteParser(booksSite)
+    fun create(webSite: WebSite): SiteParser {
+        siteParser = when (webSite.url) {
+            "http://www.fqxs.org" -> FqxsSiteParser(webSite)
 //            "http://www.fqxsw.cc" -> TomatoSiteParser(booksSite)
-            else -> FqxsSiteParser(booksSite)
+            else -> FqxsSiteParser(webSite)
         }
         return siteParser!!
     }

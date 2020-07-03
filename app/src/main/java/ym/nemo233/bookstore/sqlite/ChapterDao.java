@@ -27,13 +27,13 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property BiId = new Property(1, Long.class, "biId", false, "BI_ID");
-        public final static Property Tag = new Property(2, String.class, "tag", false, "TAG");
+        public final static Property Index = new Property(2, Integer.class, "index", false, "INDEX");
         public final static Property Name = new Property(3, String.class, "name", false, "NAME");
         public final static Property Url = new Property(4, String.class, "url", false, "URL");
         public final static Property Content = new Property(5, String.class, "content", false, "CONTENT");
     }
 
-    private Query<Chapter> booksInformation_ChaptersQuery;
+    private Query<Chapter> bookInformation_ChaptersQuery;
 
     public ChapterDao(DaoConfig config) {
         super(config);
@@ -49,7 +49,7 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"CHAPTER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"BI_ID\" INTEGER NOT NULL ," + // 1: biId
-                "\"TAG\" TEXT," + // 2: tag
+                "\"INDEX\" INTEGER," + // 2: index
                 "\"NAME\" TEXT," + // 3: name
                 "\"URL\" TEXT," + // 4: url
                 "\"CONTENT\" TEXT);"); // 5: content
@@ -71,9 +71,9 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
         }
         stmt.bindLong(2, entity.getBiId());
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(3, tag);
+        Integer index = entity.getIndex();
+        if (index != null) {
+            stmt.bindLong(3, index);
         }
  
         String name = entity.getName();
@@ -102,9 +102,9 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
         }
         stmt.bindLong(2, entity.getBiId());
  
-        String tag = entity.getTag();
-        if (tag != null) {
-            stmt.bindString(3, tag);
+        Integer index = entity.getIndex();
+        if (index != null) {
+            stmt.bindLong(3, index);
         }
  
         String name = entity.getName();
@@ -133,7 +133,7 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
         Chapter entity = new Chapter( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // biId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // tag
+            cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2), // index
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // name
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // url
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // content
@@ -145,7 +145,7 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
     public void readEntity(Cursor cursor, Chapter entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setBiId(cursor.getLong(offset + 1));
-        entity.setTag(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setIndex(cursor.isNull(offset + 2) ? null : cursor.getInt(offset + 2));
         entity.setName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setContent(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
@@ -176,16 +176,16 @@ public class ChapterDao extends AbstractDao<Chapter, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "chapters" to-many relationship of BooksInformation. */
-    public List<Chapter> _queryBooksInformation_Chapters(Long biId) {
+    /** Internal query to resolve the "chapters" to-many relationship of BookInformation. */
+    public List<Chapter> _queryBookInformation_Chapters(Long biId) {
         synchronized (this) {
-            if (booksInformation_ChaptersQuery == null) {
+            if (bookInformation_ChaptersQuery == null) {
                 QueryBuilder<Chapter> queryBuilder = queryBuilder();
                 queryBuilder.where(Properties.BiId.eq(null));
-                booksInformation_ChaptersQuery = queryBuilder.build();
+                bookInformation_ChaptersQuery = queryBuilder.build();
             }
         }
-        Query<Chapter> query = booksInformation_ChaptersQuery.forCurrentThread();
+        Query<Chapter> query = bookInformation_ChaptersQuery.forCurrentThread();
         query.setParameter(0, biId);
         return query.list();
     }

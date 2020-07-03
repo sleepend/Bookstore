@@ -6,31 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ym.nemo233.bookstore.widget.ContentSwitchView
-        android:id="@+id/book_content"
+    <FrameLayout
+        android:id="@+id/reader_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/test_text"
-        android:layout_width="wrap_content"
-        android:textColor="#FF0"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent" />
 
     <RelativeLayout
         android:id="@+id/reader_top_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp40"
-        android:visibility="gone"
         android:background="@drawable/line_grey_btm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +40,6 @@
 
     <RelativeLayout
         android:id="@+id/reader_btm"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="@drawable/line_grey_top"
@@ -146,5 +129,15 @@
 
         </RadioGroup>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/reader_loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

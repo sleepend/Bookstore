@@ -5,9 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_search.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.SearchBooksView
-import ym.nemo233.bookstore.beans.TempBook
 import ym.nemo233.bookstore.presenter.SearchPresenter
-import ym.nemo233.bookstore.sqlite.BooksInformation
+import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.ui.adapter.SearchResultAdapter
 import ym.nemo233.bookstore.widget.pop.TypePopWindow
 import ym.nemo233.framework.YMMVPActivity
@@ -58,12 +57,12 @@ class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
             }
         }
         adapter.setOnItemClickListener { adapter, _, position ->
-            val item = adapter.getItem(position) as TempBook
+            val item = adapter.getItem(position) as BookInformation
             BookDetailsActivity.skipTo(this@SearchActivity, item)
         }
     }
 
-    override fun onResultBySearch(result: List<TempBook>?) {
+    override fun onResultBySearch(result: List<BookInformation>?) {
         runOnUiThread {
             result?.let { adapter.addData(it) }
         }

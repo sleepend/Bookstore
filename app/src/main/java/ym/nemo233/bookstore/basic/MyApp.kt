@@ -40,10 +40,4 @@ class MyApp : Application() {
         L.init(BuildConfig.DEBUG)
     }
 
-    fun initData() {
-        L.d("[log-init] 初始化数据库")
-        DBHelper.initDatabases(firstStartApp)
-    }
-
-
 }

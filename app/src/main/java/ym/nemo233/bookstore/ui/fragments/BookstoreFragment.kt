@@ -7,7 +7,7 @@ import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookstoreView
 import ym.nemo233.bookstore.basic.toast
 import ym.nemo233.bookstore.presenter.BookstorePresenter
-import ym.nemo233.bookstore.sqlite.BookcaseClassifyCache
+import ym.nemo233.bookstore.sqlite.WebSite
 import ym.nemo233.bookstore.ui.activity.BookDetailsActivity
 import ym.nemo233.bookstore.ui.adapter.BookstoreAdapter
 import ym.nemo233.framework.YMMVPFragment
@@ -38,7 +38,7 @@ class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
     override fun bindEvent() {
         super.bindEvent()
         adapter.setOnItemChildClickListener { adapter, view, position ->
-            val data = adapter.data[position] as BookcaseClassifyCache
+            val data = adapter.data[position] as WebSite
             when (view.id) {
                 R.id.item_layout_1 -> BookDetailsActivity.skipTo(mContext, data.books[0])
                 R.id.item_layout_2 -> BookDetailsActivity.skipTo(mContext, data.books[1])
@@ -68,9 +68,11 @@ class BookstoreFragment : YMMVPFragment<BookstorePresenter>(), BookstoreView {
         bookcase_swipe.isRefreshing = false
     }
 
-    override fun onLoadClassify(data: List<BookcaseClassifyCache>?) {
-        adapter.setNewData(data)
-        bookcase_swipe.isRefreshing = false
+    override fun onLoadClassify(data: List<WebSite>?) {
+        mActivity.runOnUiThread {
+            adapter.setNewData(data)
+            bookcase_swipe.isRefreshing = false
+        }
     }
 
 

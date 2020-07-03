@@ -75,7 +75,8 @@ class Share<T>(val name: String, val default: T) : ReadWriteProperty<Any?, T> {
 
     companion object {
 
-        const val FIRST_START_APP: String ="FIRST_START_APP"
-        const val DEFAULT_BOOKSTORE_URL = "DEFAULT_BOOKSTORE_URL"
+        const val FIRST_START_APP = "FIRST_START_APP"
+
+        const val WEB_SITE_BEFORE_UPDATE_TIME = "WEB_SITE_BEFORE_UPDATE_TIME"
     }
 }

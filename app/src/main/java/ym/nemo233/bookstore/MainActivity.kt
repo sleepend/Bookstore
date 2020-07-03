@@ -18,7 +18,7 @@ class MainActivity : YMActivity() {
             add(MeFragment())
         }
     }
-    private var currentIndex = 0;
+    private var currentIndex = 0
 
     override fun getLayoutId(): Int = R.layout.activity_main
 

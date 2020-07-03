@@ -27,7 +27,6 @@ class SplashActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         mHandler.sendEmptyMessage(3)
-        MyApp.instance().initData()
         Thread {
             var countdown = 2
             while (--countdown >= 0) {

@@ -10,9 +10,9 @@ import kotlinx.android.synthetic.main.activity_book_details.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.BookDetailsView
 import ym.nemo233.bookstore.basic.loadUrl
-import ym.nemo233.bookstore.beans.TempBook
+import ym.nemo233.bookstore.basic.toast
 import ym.nemo233.bookstore.presenter.BookDetailsPresenter
-import ym.nemo233.bookstore.sqlite.BooksInformation
+import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.ui.adapter.ChapterAdapter
 import ym.nemo233.bookstore.utils.BlurTransform
 import ym.nemo233.framework.YMMVPActivity
@@ -21,7 +21,7 @@ import ym.nemo233.framework.YMMVPActivity
  *
  */
 class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsView {
-    private val tempBook by lazy { intent.getSerializableExtra(TEMP_BOOK) as TempBook }
+    private val bookInformation by lazy { intent.getSerializableExtra(BOOK_INFORMATION) as BookInformation }
 
     private val adapter by lazy { ChapterAdapter() }
 
@@ -30,10 +30,10 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
     override fun createPresenter(): BookDetailsPresenter? = BookDetailsPresenter(this)
 
     companion object {
-        private const val TEMP_BOOK = "TEMP_BOOK"
-        fun skipTo(context: Context, tempBook: TempBook) {
+        private const val BOOK_INFORMATION = "BOOK_INFORMATION"
+        fun skipTo(context: Context, book: BookInformation) {
             val intent = Intent(context, BookDetailsActivity::class.java)
-            intent.putExtra(TEMP_BOOK, tempBook)
+            intent.putExtra(BOOK_INFORMATION, book)
             context.startActivity(intent)
         }
     }
@@ -43,6 +43,7 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
         bd_recycler.layoutManager = LinearLayoutManager(this)
         bd_recycler.adapter = adapter
         bd_recycler.itemAnimator = DefaultItemAnimator()
+        bd_append.isEnabled = bookInformation.id == null //非空为已添加
     }
 
     override fun bindEvent() {
@@ -61,30 +62,36 @@ class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsVi
 
     override fun firstRequest() {
         super.firstRequest()
-        mvp?.loadBookDetails(tempBook)
+        mvp?.loadBookDetails(bookInformation)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onUpdateBookInfo(booksInformation: BooksInformation) {
+    override fun onUpdateBookInfo(bookInformation: BookInformation) {
         runOnUiThread {
-            bd_book_name.text = booksInformation.name
-            bd_book_auth.text = booksInformation.auth
-            bd_append.isEnabled = mvp?.checkIsAppendBookcase(booksInformation) ?: true
-            bd_book_classify.text = "分类 : ${booksInformation.className}"
-            bd_book_source.text = "来源 : ${booksInformation.baseUrl}"
-            bd_book_instr.text = booksInformation.instr
-            bd_photo.loadUrl(booksInformation.imageUrl)
+            bd_book_name.text = bookInformation.name
+            bd_book_auth.text = bookInformation.auth
+            bd_append.isEnabled = mvp?.checkIsAppendBookcase(bookInformation) ?: true
+            bd_book_classify.text = "分类 : ${bookInformation.className}"
+            bd_book_source.text = "来源 : ${bookInformation.siteName}"
+            bd_book_instr.text = bookInformation.instr
+            bd_photo.loadUrl(bookInformation.imageUrl)
             val options = RequestOptions.bitmapTransform(BlurTransform(this, 12f))
-            bd_top_bg.loadUrl(booksInformation.imageUrl, options)
-            bd_book_newest.text = "最新章节: ${booksInformation.chapters.first()?.name}"
+            bd_top_bg.loadUrl(bookInformation.imageUrl, options)
+            bd_book_newest.text = "最新章节: ${bookInformation.newest}"
             //
-            adapter.setNewData(booksInformation.chapters)
+            adapter.setNewData(bookInformation.latest)
         }
     }
 
     override fun onLoadError() {
         //加载失败
 
+    }
+
+    override fun appendFailed() {
+        runOnUiThread {
+            toast("添加失败")
+        }
     }
 
     override fun onAddToBookcase(result: Boolean) {
