@@ -19,25 +19,36 @@ public class WebSite implements Parcelable {
     private String decode;//解码方式
     private Integer delayMill;//延迟
     private Integer isDefault;
+    private String searchUrl;
     private Long parent;
 
     @Transient
     public List<BookInformation> books;
 
-    @Generated(hash = 1818195117)
+    @Generated(hash = 1172638008)
     public WebSite(Long id, String name, String url, String decode,
-                   Integer delayMill, Integer isDefault, Long parent) {
+                   Integer delayMill, Integer isDefault, String searchUrl, Long parent) {
         this.id = id;
         this.name = name;
         this.url = url;
         this.decode = decode;
         this.delayMill = delayMill;
         this.isDefault = isDefault;
+        this.searchUrl = searchUrl;
         this.parent = parent;
     }
 
     @Generated(hash = 121794805)
     public WebSite() {
+    }
+
+    /**
+     * 历史记录-临时数据
+     * @param name
+     */
+    public WebSite(String name){
+        this.id = -1L;
+        this.name = name;
     }
 
     protected WebSite(Parcel in) {
@@ -59,11 +70,13 @@ public class WebSite implements Parcelable {
         } else {
             isDefault = in.readInt();
         }
+        searchUrl = in.readString();
         if (in.readByte() == 0) {
             parent = null;
         } else {
             parent = in.readLong();
         }
+        books = in.createTypedArrayList(BookInformation.CREATOR);
     }
 
     public static final Creator<WebSite> CREATOR = new Creator<WebSite>() {
@@ -134,6 +147,14 @@ public class WebSite implements Parcelable {
         this.parent = parent;
     }
 
+    public String getSearchUrl() {
+        return this.searchUrl;
+    }
+
+    public void setSearchUrl(String searchUrl) {
+        this.searchUrl = searchUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -162,11 +183,13 @@ public class WebSite implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(isDefault);
         }
+        dest.writeString(searchUrl);
         if (parent == null) {
             dest.writeByte((byte) 0);
         } else {
             dest.writeByte((byte) 1);
             dest.writeLong(parent);
         }
+        dest.writeTypedList(books);
     }
 }

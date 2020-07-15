@@ -41,6 +41,7 @@ class FqxsSiteParser(private val webSite: WebSite) : SiteParser {
                     webSite.decode,
                     webSite.delayMill,
                     0,
+                    "",
                     webSite.id
                 )
             }
@@ -73,7 +74,7 @@ class FqxsSiteParser(private val webSite: WebSite) : SiteParser {
             val imgUrl = if (img.startsWith("/")) {
                 this.webSite.url + img
             } else img
-            BookInformation(name, auth, url, imgUrl)
+            BookInformation(name, auth, imgUrl, url)
         }
     }
 
@@ -85,7 +86,6 @@ class FqxsSiteParser(private val webSite: WebSite) : SiteParser {
                 bookInformation.sourceUrl
             )
             val head = doc.head()
-            L.d("[log-loadBookInformation] ${bookInformation.sourceUrl}")
             bookInformation.auth = head.select("meta[property=og:novel:author]").attr("content")
             bookInformation.instr = head.select("meta[property=og:description]").attr("content")
             bookInformation.imageUrl = head.select("meta[property=og:image]").attr("content")

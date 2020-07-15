@@ -9,4 +9,8 @@
     <color name="theme">#663</color>
     <color name="grey666">#666</color>
     <color name="lines_border">#663</color>
+    <color name="c0000">#0000</color>
+    <color name="bg">#FFFFFFFF</color>
+    <color name="text_color">#5c5c5c</color>
+    <color name="transparent">#00000000</color>
 </resources>

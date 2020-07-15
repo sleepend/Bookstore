@@ -1,71 +1,71 @@
 package ym.nemo233.bookstore.ui.activity
 
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.top_bar_search.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.SearchBooksView
 import ym.nemo233.bookstore.presenter.SearchPresenter
 import ym.nemo233.bookstore.sqlite.BookInformation
-import ym.nemo233.bookstore.ui.adapter.SearchResultAdapter
-import ym.nemo233.bookstore.widget.pop.TypePopWindow
+import ym.nemo233.bookstore.sqlite.WebSite
+import ym.nemo233.bookstore.ui.fragments.SearchTipsFragment
 import ym.nemo233.framework.YMMVPActivity
 
 /**
- * 搜索
+ * viewpager2
+ * https://www.jianshu.com/p/93e2850cc480
  */
 class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
-    private val adapter by lazy { SearchResultAdapter() }
-
-    private val popWindow by lazy {
-        TypePopWindow(this).apply {
-            callback = object : TypePopWindow.YMPopCallback {
-                override fun select(type: Int) {
-                    search_type.tag = type
-                    search_type.text = if (type == 0) "默认" else "全站"
-                }
-            }
-        }
-    }
 
     override fun getLayoutId(): Int = R.layout.activity_search
     override fun createPresenter(): SearchPresenter? = SearchPresenter(this)
 
     override fun initView() {
-        search_recycler.layoutManager = LinearLayoutManager(this)
-        search_recycler.adapter = adapter
-        search_recycler.itemAnimator = DefaultItemAnimator()
+        super.initView()
     }
 
     override fun bindEvent() {
         super.bindEvent()
-        backspace.setOnClickListener {
-            finish()
+        topbar_back.setOnClickListener { finish() }
+        topbar_clear.setOnClickListener {
+            topbar_search_view.setText("")
         }
-        search_btn.setOnClickListener {
-            val txt = search_txt.text.toString()
-            if (txt.length < 2) {
-                return@setOnClickListener
-            }
-            adapter.setNewData(null)
-            val type = search_type.tag?.toString()?.toInt() ?: 0
-            mvp?.searchBooks(type, txt)
-        }
-        search_type.setOnClickListener {
-            if (!popWindow.isShowing) {
-                popWindow.showAsDropDown(it)
-            }
-        }
-        adapter.setOnItemClickListener { adapter, _, position ->
-            val item = adapter.getItem(position) as BookInformation
-            BookDetailsActivity.skipTo(this@SearchActivity, item)
+        topbar_search.setOnClickListener {
+            //搜索
         }
     }
 
-    override fun onResultBySearch(result: List<BookInformation>?) {
-        runOnUiThread {
-            result?.let { adapter.addData(it) }
+    override fun firstRequest() {
+        super.firstRequest()
+        mvp?.loadSiteList()
+    }
+
+    override fun onResultForLocalData(data: List<WebSite>) {
+        search_view_pager.adapter = object : FragmentStateAdapter(this) {
+            override fun getItemCount(): Int = data.size
+
+            override fun createFragment(position: Int): Fragment =
+                SearchTipsFragment.getInstance(data[position])
         }
+        TabLayoutMediator(
+            search_tab_layout,
+            search_view_pager,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                //tab 当前选中对象
+                //position 当前选的位置
+                tab.text = data[position].name
+            }).attach()
+        search_view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            //滑动切换事件
+        })
+    }
+
+
+    override fun onResultBySearch(result: List<BookInformation>?) {
+
     }
 
 }

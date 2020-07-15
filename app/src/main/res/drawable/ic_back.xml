@@ -1,9 +1,6 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="32dp"
-    android:height="32dp"
-    android:viewportWidth="1024"
-    android:viewportHeight="1024">
-  <path
-      android:pathData="M674.22,836.44c-6.52,0 -13.11,-2.32 -18.1,-6.95L331.68,528.8c-9.99,-9.27 -9.99,-24.33 0,-33.6L656.12,194.51c9.99,-9.27 26.22,-9.27 36.21,0 9.99,9.27 9.99,24.33 0,33.6L385.99,512l306.34,283.89c9.99,9.27 9.99,24.33 0,33.6 -5,4.63 -11.59,6.95 -18.1,6.95z"
-      android:fillColor="#707070"/>
-</vector>
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_back_s" android:state_pressed="true" />
+    <item android:drawable="@drawable/ic_back_n" />
+
+</selector>

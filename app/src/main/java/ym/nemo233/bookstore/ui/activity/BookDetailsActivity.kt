@@ -21,7 +21,7 @@ import ym.nemo233.framework.YMMVPActivity
  *
  */
 class BookDetailsActivity : YMMVPActivity<BookDetailsPresenter>(), BookDetailsView {
-    private val bookInformation by lazy { intent.getSerializableExtra(BOOK_INFORMATION) as BookInformation }
+    private val bookInformation by lazy { intent.getParcelableExtra(BOOK_INFORMATION) as BookInformation }
 
     private val adapter by lazy { ChapterAdapter() }
 

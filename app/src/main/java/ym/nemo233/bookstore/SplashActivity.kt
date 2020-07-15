@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Message
 import android.os.SystemClock
-import ym.nemo233.bookstore.basic.MyApp
+import ym.nemo233.bookstore.ui.activity.MainActivity
 
 class SplashActivity : Activity() {
 

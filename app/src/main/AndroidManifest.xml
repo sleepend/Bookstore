@@ -15,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:testOnly="false"
-        android:theme="@style/defaultTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="m">
@@ -28,10 +27,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".ui.activity.MainActivity"
+            android:theme="@style/defaultTheme.NoActionBar" />
         <activity android:name=".ui.activity.BookDetailsActivity" />
-        <activity android:name=".ui.activity.SearchActivity" />
         <activity android:name=".ui.activity.ReaderActivity" />
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/defaultTheme.NoActionBar" />
     </application>
 
 </manifest>

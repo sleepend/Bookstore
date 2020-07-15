@@ -18,13 +18,13 @@ object DBHelper {
     fun loadDefaultSite(): WebSite {
         val data = webSiteDao.loadAll().singleOrNull() { it.isDefault == 1 }
         return if (data == null) {
-            val webSite = WebSite(null, "番茄小说", "http://www.fqxs.org", "UTF-8", 99, 1, -1)
+            val webSite = WebSite(null, "番茄小说", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1)
             webSiteDao.insertInTx(webSite)
             webSite
         } else data
     }
 
-    fun loadBookSite(): List<WebSite>? {
+    fun loadBookSite(): MutableList<WebSite>? {
         return webSiteDao.loadAll()
     }
 
@@ -68,6 +68,17 @@ object DBHelper {
             e.printStackTrace()
         }
         return null
+    }
+
+    fun initializationConfiguration() {
+        if (webSiteDao.loadAll().isNotEmpty()) {
+            return
+        }
+        webSiteDao.insertInTx(arrayListOf<WebSite>().apply {
+            add(WebSite(null, "起点推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
+            add(WebSite(null, "番茄推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
+            add(WebSite(null, "完本推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
+        })
     }
 
 

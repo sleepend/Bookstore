@@ -4,6 +4,8 @@ import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.Chapter
 import ym.nemo233.bookstore.sqlite.WebSite
 
+interface MainView
+
 interface ReaderView {
     fun onLoadBookByBookcase(
         chapter: Chapter?,
@@ -38,4 +40,5 @@ interface BookDetailsView {
 
 interface SearchBooksView {
     fun onResultBySearch(result: List<BookInformation>?)
+    fun onResultForLocalData(data: List<WebSite>)
 }

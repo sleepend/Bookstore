@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp4">4dp</dimen>
     <dimen name="dp8">8dp</dimen>
     <dimen name="dp16">16dp</dimen>
     <dimen name="dp24">24dp</dimen>
@@ -8,4 +9,8 @@
     <dimen name="dp40">40dp</dimen>
     <dimen name="dp48">48dp</dimen>
     <dimen name="dp12">12dp</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
+    <dimen name="lines_width">1dp</dimen>
 </resources>

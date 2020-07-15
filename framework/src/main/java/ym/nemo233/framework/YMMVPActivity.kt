@@ -20,4 +20,7 @@ abstract class YMMVPActivity<P : BasePresenter<*>> : YMActivity() {
         super.onDestroy()
     }
 
+    override fun initView() {
+
+    }
 }

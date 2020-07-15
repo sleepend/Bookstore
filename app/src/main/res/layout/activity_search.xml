@@ -1,94 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/bg"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context=".ui.activity.SearchActivity">
 
-    <View
+    <include layout="@layout/top_bar_search" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/search_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp24"
-        android:background="@color/theme" />
+        android:layout_height="36dp"
+        app:tabBackground="@color/transparent"
+        app:tabIndicatorColor="@color/lines_border"
+        app:tabRippleColor="@color/transparent"
+        app:tabSelectedTextColor="@color/lines_border"
+        app:tabTextColor="@color/text_color" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp48"
-        android:background="@color/theme">
-
-        <ImageView
-            android:id="@+id/backspace"
-            android:layout_width="@dimen/dp48"
-            android:layout_height="@dimen/dp48"
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:padding="@dimen/dp12"
-            android:src="@mipmap/backspace"
-            android:textColor="@color/white"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="搜索"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/grey"
-        android:paddingStart="@dimen/dp16"
-        android:paddingTop="@dimen/dp12"
-        android:paddingEnd="@dimen/dp16"
-        android:paddingBottom="@dimen/dp12">
-
-        <TextView
-            android:id="@+id/search_type"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
-            android:layout_alignParentStart="true"
-            android:background="@drawable/bg_et"
-            android:drawableEnd="@mipmap/drop_down"
-            android:gravity="center"
-            android:minWidth="72dp"
-            android:paddingStart="@dimen/dp8"
-            android:paddingEnd="@dimen/dp8"
-            android:text="默认"
-            android:textColor="@color/black"
-            android:textSize="13sp" />
-
-        <EditText
-            android:id="@+id/search_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp40"
-            android:layout_marginStart="-2dp"
-            android:layout_toStartOf="@+id/search_btn"
-            android:layout_toEndOf="@id/search_type"
-            android:background="@drawable/bg_et"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/dp12"
-            android:paddingEnd="@dimen/dp12"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/search_btn"
-            android:layout_width="72dp"
-            android:layout_height="@dimen/dp40"
-            android:layout_alignParentEnd="true"
-            android:background="@color/theme"
-            android:gravity="center"
-            android:lines="1"
-            android:text="搜索"
-            android:textColor="@color/white" />
-
-    </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_recycler"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/search_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
