@@ -4,13 +4,13 @@ import ym.nemo233.bookstore.sqlite.*
 import ym.nemo233.bookstore.utils.Encryption
 
 object DBHelper {
-    private var firstStartApp by Share(Share.FIRST_START_APP, true)
     //操作对象
     private val daoSession by lazy { MyApp.instance().daoMaster.newSession() }
     private val webSiteDao by lazy { daoSession.webSiteDao }
 
     private val bookInformationDao by lazy { daoSession.bookInformationDao }
     private val chapterDao by lazy { daoSession.chapterDao }
+    private val historyQueryDao by lazy { daoSession.historyQueryDao }
 
     /**
      * 加载默认站点
@@ -75,10 +75,23 @@ object DBHelper {
             return
         }
         webSiteDao.insertInTx(arrayListOf<WebSite>().apply {
-            add(WebSite(null, "起点推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
-            add(WebSite(null, "番茄推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
+            //add(WebSite(null, "起点推荐", "https://m.qidian.com/", "UTF-8", 99, 1, "", -1))
+            add(WebSite(null, "番茄推荐", "http://m.fqxs.org", "UTF-8", 99, 1, "/modules/article/search.php", -1))
             add(WebSite(null, "完本推荐", "http://www.fqxs.org", "UTF-8", 99, 1, "", -1))
         })
+        historyQueryDao.insertInTx(arrayListOf<HistoryQuery>().apply {
+            add(HistoryQuery())
+        })
+    }
+
+    /**
+     * 加载搜索关键字
+     */
+    fun loadSearchKeywords():MutableList<HistoryQuery> {
+        return historyQueryDao.queryBuilder()
+            .orderAsc(HistoryQueryDao.Properties.Stamp,HistoryQueryDao.Properties.Sort)
+            .distinct()
+            .list()
     }
 
 

@@ -20,6 +20,7 @@ public class WebSite implements Parcelable {
     private Integer delayMill;//延迟
     private Integer isDefault;
     private String searchUrl;
+    private String hotUrl;
     private Long parent;
 
     @Transient

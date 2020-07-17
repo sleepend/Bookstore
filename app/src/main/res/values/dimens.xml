@@ -13,4 +13,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="lines_width">1dp</dimen>
+    <dimen name="dp72">72dp</dimen>
 </resources>

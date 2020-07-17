@@ -76,4 +76,5 @@ public class HistoryQuery {
     public void setStamp(Long stamp) {
         this.stamp = stamp;
     }
+
 }

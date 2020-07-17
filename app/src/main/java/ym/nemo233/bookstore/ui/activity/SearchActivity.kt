@@ -35,6 +35,11 @@ class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
         }
         topbar_search.setOnClickListener {
             //搜索
+            val keywords = topbar_search_view.text.toString()
+            if(keywords.isEmpty()){
+                return@setOnClickListener
+            }
+
         }
     }
 
