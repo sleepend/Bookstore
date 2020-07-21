@@ -15,13 +15,13 @@ import ym.nemo233.bookstore.sqlite.WebSite
 class BookstoreAdapter(private val activity: Activity) :
     BaseQuickAdapter<WebSite, BaseViewHolder>(R.layout.item_bookstore) {
 
-    private val siteParser by lazy { SiteParseFactory.loadDefault() }
+//    private val siteParser by lazy { SiteParseFactory.loadDefault() }
 
     override fun convert(helper: BaseViewHolder?, item: WebSite) {
         helper?.apply {
             setText(R.id.item_bs_title, item.name)
             Thread {
-                item.books = siteParser.loadBooksByClassify(item)
+//                item.books = siteParser.loadBooksByClassify(item)
                 if (item.books != null) {
                     activity.runOnUiThread {
                         addOnClickListener(R.id.item_bs_more)//更多

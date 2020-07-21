@@ -1,6 +1,7 @@
-package ym.nemo233.bookstore.basic
+package ym.nemo233.bookstore.utils
 
 import android.content.Context
+import ym.nemo233.bookstore.basic.MyApp
 import java.io.*
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
@@ -14,7 +15,8 @@ import kotlin.reflect.KProperty
  */
 class Share<T>(val name: String, val default: T) : ReadWriteProperty<Any?, T> {
     private val prefs by lazy {
-        MyApp.instance().getSharedPreferences("config", Context.MODE_PRIVATE)
+        MyApp.instance()
+            .getSharedPreferences("config", Context.MODE_PRIVATE)
     }
 
     override fun getValue(thisRef: Any?, property: KProperty<*>): T {

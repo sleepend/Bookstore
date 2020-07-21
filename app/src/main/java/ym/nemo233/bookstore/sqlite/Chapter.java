@@ -28,6 +28,7 @@ public class Chapter implements Parcelable {
      */
     @Keep
     public Chapter(String name, String url) {
+        this.id = null;
         this.name = name;
         this.url = url;
     }

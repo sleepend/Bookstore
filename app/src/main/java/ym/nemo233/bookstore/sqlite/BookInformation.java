@@ -10,7 +10,6 @@ import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Keep;
 import org.greenrobot.greendao.annotation.ToMany;
 import org.greenrobot.greendao.annotation.Transient;
-import org.greenrobot.greendao.annotation.Unique;
 
 import java.util.List;
 
@@ -18,20 +17,22 @@ import java.util.List;
 public class BookInformation implements Parcelable {
     @Id(autoincrement = true)
     private Long id; //id,有id表示书架打开,无id表示搜索打开
-    @Unique
-    private String identifyCode;//识别码=书名+作者+引用地址
     private String name;//书名
     private String auth;//作者
     private String instr;//简介
     private String imageUrl;//封面
-    private String className;//标签
     private String status; //状态
+    private String className;//标签
+
     private String sourceUrl;//引用网页地址
-    private String siteName;//来源
+    private String siteName;//来源站
     private Integer currentChapter;//当前阅读章节
-    private Integer sort;//排序索引
+
+    private String allChapterUrl;//所有章节地址
     private String newest;//最新章节
+    private String newestUrl;//最新章节地址
     private String upt;//更新时间
+
 
     @ToMany(referencedJoinProperty = "biId")
     private List<Chapter> chapters;
@@ -39,24 +40,23 @@ public class BookInformation implements Parcelable {
     @Transient
     public List<Chapter> latest;
 
-    @Generated(hash = 2061895590)
-    public BookInformation(Long id, String identifyCode, String name, String auth,
-                           String instr, String imageUrl, String className, String status,
-                           String sourceUrl, String siteName, Integer currentChapter, Integer sort,
-                           String newest, String upt) {
+    @Generated(hash = 649690406)
+    public BookInformation(Long id, String name, String auth, String instr, String imageUrl,
+                           String status, String className, String sourceUrl, String siteName, Integer currentChapter,
+                           String allChapterUrl, String newest, String newestUrl, String upt) {
         this.id = id;
-        this.identifyCode = identifyCode;
         this.name = name;
         this.auth = auth;
         this.instr = instr;
         this.imageUrl = imageUrl;
-        this.className = className;
         this.status = status;
+        this.className = className;
         this.sourceUrl = sourceUrl;
         this.siteName = siteName;
         this.currentChapter = currentChapter;
-        this.sort = sort;
+        this.allChapterUrl = allChapterUrl;
         this.newest = newest;
+        this.newestUrl = newestUrl;
         this.upt = upt;
     }
 
@@ -75,7 +75,6 @@ public class BookInformation implements Parcelable {
     @Keep
     public BookInformation(String name, String auth, String imageUrl, String sourceUrl) {
         this.id = null;
-        this.identifyCode = null;
         this.name = name;
         this.auth = auth;
         this.instr = null;
@@ -85,7 +84,6 @@ public class BookInformation implements Parcelable {
         this.sourceUrl = sourceUrl;
         this.siteName = null;
         this.currentChapter = -1;
-        this.sort = -1;
         this.newest = null;
         this.upt = null;
     }
@@ -107,13 +105,12 @@ public class BookInformation implements Parcelable {
         } else {
             id = in.readLong();
         }
-        identifyCode = in.readString();
         name = in.readString();
         auth = in.readString();
         instr = in.readString();
         imageUrl = in.readString();
-        className = in.readString();
         status = in.readString();
+        className = in.readString();
         sourceUrl = in.readString();
         siteName = in.readString();
         if (in.readByte() == 0) {
@@ -121,12 +118,9 @@ public class BookInformation implements Parcelable {
         } else {
             currentChapter = in.readInt();
         }
-        if (in.readByte() == 0) {
-            sort = null;
-        } else {
-            sort = in.readInt();
-        }
+        allChapterUrl = in.readString();
         newest = in.readString();
+        newestUrl = in.readString();
         upt = in.readString();
         chapters = in.createTypedArrayList(Chapter.CREATOR);
         latest = in.createTypedArrayList(Chapter.CREATOR);
@@ -150,14 +144,6 @@ public class BookInformation implements Parcelable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getIdentifyCode() {
-        return this.identifyCode;
-    }
-
-    public void setIdentifyCode(String identifyCode) {
-        this.identifyCode = identifyCode;
     }
 
     public String getName() {
@@ -232,14 +218,6 @@ public class BookInformation implements Parcelable {
         this.currentChapter = currentChapter;
     }
 
-    public Integer getSort() {
-        return this.sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
     public String getNewest() {
         return this.newest;
     }
@@ -254,6 +232,22 @@ public class BookInformation implements Parcelable {
 
     public void setUpt(String upt) {
         this.upt = upt;
+    }
+
+    public String getNewestUrl() {
+        return this.newestUrl;
+    }
+
+    public void setNewestUrl(String newestUrl) {
+        this.newestUrl = newestUrl;
+    }
+
+    public String getAllChapterUrl() {
+        return this.allChapterUrl;
+    }
+
+    public void setAllChapterUrl(String allChapterUrl) {
+        this.allChapterUrl = allChapterUrl;
     }
 
     /**
@@ -344,13 +338,12 @@ public class BookInformation implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeLong(id);
         }
-        dest.writeString(identifyCode);
         dest.writeString(name);
         dest.writeString(auth);
         dest.writeString(instr);
         dest.writeString(imageUrl);
-        dest.writeString(className);
         dest.writeString(status);
+        dest.writeString(className);
         dest.writeString(sourceUrl);
         dest.writeString(siteName);
         if (currentChapter == null) {
@@ -359,13 +352,9 @@ public class BookInformation implements Parcelable {
             dest.writeByte((byte) 1);
             dest.writeInt(currentChapter);
         }
-        if (sort == null) {
-            dest.writeByte((byte) 0);
-        } else {
-            dest.writeByte((byte) 1);
-            dest.writeInt(sort);
-        }
+        dest.writeString(allChapterUrl);
         dest.writeString(newest);
+        dest.writeString(newestUrl);
         dest.writeString(upt);
         dest.writeTypedList(chapters);
         dest.writeTypedList(latest);

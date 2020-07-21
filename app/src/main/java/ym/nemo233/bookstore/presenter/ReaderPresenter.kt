@@ -6,7 +6,7 @@ import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.framework.mvp.BasePresenter
 
 class ReaderPresenter(view: ReaderView) : BasePresenter<ReaderView>() {
-    private val siteParser by lazy { SiteParseFactory.loadDefault() }
+
 
     init {
         attachView(view)

@@ -18,7 +18,7 @@
             android:id="@+id/about"
             android:layout_width="@dimen/dp48"
             android:layout_height="@dimen/dp48"
-            android:padding="@dimen/dp8"
+            android:padding="@dimen/dp12"
             android:layout_alignParentStart="true"
             android:background="@color/c0000"
             android:src="@drawable/ic_tips" />

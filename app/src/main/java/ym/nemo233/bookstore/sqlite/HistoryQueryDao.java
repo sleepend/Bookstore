@@ -24,10 +24,7 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property SearchKey = new Property(1, String.class, "searchKey", false, "SEARCH_KEY");
-        public final static Property Site = new Property(2, String.class, "site", false, "SITE");
-        public final static Property Url = new Property(3, String.class, "url", false, "URL");
-        public final static Property Sort = new Property(4, Integer.class, "sort", false, "SORT");
-        public final static Property Stamp = new Property(5, Long.class, "stamp", false, "STAMP");
+        public final static Property Stamp = new Property(2, Long.class, "stamp", false, "STAMP");
     }
 
 
@@ -45,10 +42,7 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"HISTORY_QUERY\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"SEARCH_KEY\" TEXT," + // 1: searchKey
-                "\"SITE\" TEXT," + // 2: site
-                "\"URL\" TEXT," + // 3: url
-                "\"SORT\" INTEGER," + // 4: sort
-                "\"STAMP\" INTEGER);"); // 5: stamp
+                "\"STAMP\" INTEGER);"); // 2: stamp
     }
 
     /** Drops the underlying database table. */
@@ -71,24 +65,9 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
             stmt.bindString(2, searchKey);
         }
  
-        String site = entity.getSite();
-        if (site != null) {
-            stmt.bindString(3, site);
-        }
- 
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(4, url);
-        }
- 
-        Integer sort = entity.getSort();
-        if (sort != null) {
-            stmt.bindLong(5, sort);
-        }
- 
         Long stamp = entity.getStamp();
         if (stamp != null) {
-            stmt.bindLong(6, stamp);
+            stmt.bindLong(3, stamp);
         }
     }
 
@@ -106,24 +85,9 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
             stmt.bindString(2, searchKey);
         }
  
-        String site = entity.getSite();
-        if (site != null) {
-            stmt.bindString(3, site);
-        }
- 
-        String url = entity.getUrl();
-        if (url != null) {
-            stmt.bindString(4, url);
-        }
- 
-        Integer sort = entity.getSort();
-        if (sort != null) {
-            stmt.bindLong(5, sort);
-        }
- 
         Long stamp = entity.getStamp();
         if (stamp != null) {
-            stmt.bindLong(6, stamp);
+            stmt.bindLong(3, stamp);
         }
     }
 
@@ -137,10 +101,7 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
         HistoryQuery entity = new HistoryQuery( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // searchKey
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // site
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // url
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // sort
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // stamp
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2) // stamp
         );
         return entity;
     }
@@ -149,10 +110,7 @@ public class HistoryQueryDao extends AbstractDao<HistoryQuery, Long> {
     public void readEntity(Cursor cursor, HistoryQuery entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setSearchKey(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setSite(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setUrl(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setSort(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setStamp(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setStamp(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
      }
     
     @Override

@@ -1,23 +1,24 @@
 package ym.nemo233.bookstore.parse
 
-import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.parse.impl.FqxsSiteParser
 import ym.nemo233.bookstore.sqlite.WebSite
 
 object SiteParseFactory {
-
-    private var siteParser: SiteParser? = null
+    private val webSites = HashMap<String, WebSite>()
 
     fun create(webSite: WebSite): SiteParser {
-        siteParser = when (webSite.url) {
-            "http://www.fqxs.org" -> FqxsSiteParser(webSite)
+        webSites[webSite.name] = webSite //缓存记录
+        return when (webSite.url) {
+            "http://m.fqxs.org" -> FqxsSiteParser(webSite)
 //            "http://www.fqxsw.cc" -> TomatoSiteParser(booksSite)
             else -> FqxsSiteParser(webSite)
         }
-        return siteParser!!
     }
 
-    fun loadDefault(): SiteParser = siteParser ?: create(DBHelper.loadDefaultSite())
+    fun loadDefault(siteName: String): SiteParser? {
+        val webSite = webSites[siteName] ?: return null
+        return create(webSite)
+    }
 
 
 }

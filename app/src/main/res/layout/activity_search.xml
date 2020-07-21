@@ -15,7 +15,7 @@
         android:id="@+id/search_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        app:tabBackground="@color/transparent"
+        app:tabBackground="@color/grey"
         app:tabIndicatorColor="@color/lines_border"
         app:tabRippleColor="@color/transparent"
         app:tabSelectedTextColor="@color/lines_border"

@@ -29,7 +29,8 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
         public final static Property DelayMill = new Property(4, Integer.class, "delayMill", false, "DELAY_MILL");
         public final static Property IsDefault = new Property(5, Integer.class, "isDefault", false, "IS_DEFAULT");
         public final static Property SearchUrl = new Property(6, String.class, "searchUrl", false, "SEARCH_URL");
-        public final static Property Parent = new Property(7, Long.class, "parent", false, "PARENT");
+        public final static Property HotUrl = new Property(7, String.class, "hotUrl", false, "HOT_URL");
+        public final static Property Parent = new Property(8, Long.class, "parent", false, "PARENT");
     }
 
 
@@ -52,7 +53,8 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
                 "\"DELAY_MILL\" INTEGER," + // 4: delayMill
                 "\"IS_DEFAULT\" INTEGER," + // 5: isDefault
                 "\"SEARCH_URL\" TEXT," + // 6: searchUrl
-                "\"PARENT\" INTEGER);"); // 7: parent
+                "\"HOT_URL\" TEXT," + // 7: hotUrl
+                "\"PARENT\" INTEGER);"); // 8: parent
     }
 
     /** Drops the underlying database table. */
@@ -100,9 +102,14 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
             stmt.bindString(7, searchUrl);
         }
  
+        String hotUrl = entity.getHotUrl();
+        if (hotUrl != null) {
+            stmt.bindString(8, hotUrl);
+        }
+ 
         Long parent = entity.getParent();
         if (parent != null) {
-            stmt.bindLong(8, parent);
+            stmt.bindLong(9, parent);
         }
     }
 
@@ -145,9 +152,14 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
             stmt.bindString(7, searchUrl);
         }
  
+        String hotUrl = entity.getHotUrl();
+        if (hotUrl != null) {
+            stmt.bindString(8, hotUrl);
+        }
+ 
         Long parent = entity.getParent();
         if (parent != null) {
-            stmt.bindLong(8, parent);
+            stmt.bindLong(9, parent);
         }
     }
 
@@ -166,7 +178,8 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // delayMill
             cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // isDefault
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // searchUrl
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // parent
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // hotUrl
+            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8) // parent
         );
         return entity;
     }
@@ -180,7 +193,8 @@ public class WebSiteDao extends AbstractDao<WebSite, Long> {
         entity.setDelayMill(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
         entity.setIsDefault(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
         entity.setSearchUrl(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setParent(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
+        entity.setHotUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setParent(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
      }
     
     @Override

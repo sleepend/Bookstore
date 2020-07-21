@@ -6,6 +6,7 @@ import android.util.DisplayMetrics
 import android.view.WindowManager
 import ym.nemo233.bookstore.BuildConfig
 import ym.nemo233.bookstore.sqlite.DaoMaster
+import ym.nemo233.bookstore.utils.Share
 import ym.nemo233.framework.utils.L
 
 class MyApp : Application() {
@@ -16,7 +17,10 @@ class MyApp : Application() {
         fun instance() = app!!
     }
 
-    private val firstStartApp by Share(Share.FIRST_START_APP, true)
+    private val firstStartApp by Share(
+        Share.FIRST_START_APP,
+        true
+    )
 
     /**
      * 数据库管理器

@@ -1,34 +1,26 @@
 package ym.nemo233.bookstore.ui.fragments
 
+import android.view.View
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_search_tips.*
-import org.jsoup.Jsoup
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.DBHelper
-import ym.nemo233.bookstore.parse.SiteParseFactory
 import ym.nemo233.bookstore.sqlite.HistoryQuery
-import ym.nemo233.bookstore.sqlite.WebSite
+import ym.nemo233.bookstore.ui.activity.SearchResultActivity
 import ym.nemo233.bookstore.ui.adapter.SearchTipsAdapter
 import ym.nemo233.framework.YMFragment
-import java.net.URL
 
 /**
- * 搜索的提示符
+ * 历史搜索的提示符
  */
 class SearchTipsFragment : YMFragment() {
-    private val webSite by lazy { arguments?.getParcelable(WEB_SITE) as WebSite }
     private val adapter by lazy { SearchTipsAdapter() }
 
     companion object {
         private const val WEB_SITE = "WEB_SITE"
 
-        fun getInstance(webSite: WebSite): YMFragment {
-            val fragment = SearchTipsFragment()
-            fragment.arguments?.putParcelable(WEB_SITE, webSite)
-            return fragment
-        }
-
+        fun getInstance(): YMFragment = SearchTipsFragment()
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_search_tips
@@ -41,33 +33,28 @@ class SearchTipsFragment : YMFragment() {
 
     override fun firstRequest() {
         super.firstRequest()
-        if (webSite.id == -1L) {//历史记录
-            loadHistory()
-        } else {
-            //根据平台,获得推荐列表
-            loadHotBySite(webSite)
+        loadHistory()
+    }
+
+    override fun bindEvent() {
+        super.bindEvent()
+        adapter.setOnItemClickListener { adapter, _, position ->
+            val data = adapter.getItem(position) as HistoryQuery
+            //执行查询
+            if (data.searchKey == "关于") {
+                //弹出提示框
+            } else {
+                //开始执行搜索
+                SearchResultActivity.skipTo(mContext, data.searchKey)
+            }
         }
     }
 
-    //根据站点,获得推荐
-    private fun loadHotBySite(webSite: WebSite) {
-        Thread {
-            val html = Jsoup.parse(URL(webSite.url).openStream(), webSite.decode, webSite.url)
-            when(webSite.name){
-                "番茄推荐"->{
-                    val parser = SiteParseFactory.create(webSite)
-
-                }
-            }
-
-        }.start()
-    }
-
-
-
-
     private fun loadHistory() {
         val data = DBHelper.loadSearchKeywords()
+        if (data.isEmpty()) {
+            data.add(HistoryQuery(-1, "关于", 0L))
+        }
         loadResultSuccess(data)
     }
 
@@ -75,6 +62,8 @@ class SearchTipsFragment : YMFragment() {
      * 数据加载成功,显示界面
      */
     private fun loadResultSuccess(data: MutableList<HistoryQuery>) {
+        search_tips_loading.visibility = View.GONE
+        search_tips_fail.visibility = View.GONE
         adapter.setNewData(data)
     }
 }

@@ -2,43 +2,32 @@ package ym.nemo233.bookstore.parse
 
 import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.Chapter
-import ym.nemo233.bookstore.sqlite.WebSite
+import ym.nemo233.bookstore.sqlite.HotBook
 
 interface SiteParser {
     /**
-     * 返回默认书城编号
+     * 返回热门
      */
-    fun getWebSiteId(): Long
-
-    /**
-     * 加载书城分类
-     */
-    fun loadBookcaseClassify(): List<WebSite>?
-
-    /**
-     * 解析分类获得列表
-     */
-    fun loadBooksByClassify(webSite: WebSite): List<BookInformation>?
+    fun loadHotBooks(): List<HotBook>
 
     /**
      * 加载详情&最新章节
      */
-    fun loadBookInformation(bookInformation: BookInformation)
+    fun loadBookInformation(hotBook: HotBook): BookInformation?
 
     /**
-     * 缓存目录
-     * @return 最新章节
+     * 缓存章节目录
      */
-    fun loadChaptersCache(bookInformation: BookInformation): Boolean
+    fun loadAllChapters(bookInformation: BookInformation): List<Chapter>
+
+    /**
+     * 搜索
+     */
+    fun search(keywords: String): List<HotBook>?
 
     /**
      * 解析章节
      */
     fun loadChapter(chapter: Chapter): Chapter
-
-    /**
-     * 搜索
-     */
-    fun searchBook(bookName: String): List<BookInformation>?
 
 }

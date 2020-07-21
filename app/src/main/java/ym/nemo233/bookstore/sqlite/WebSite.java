@@ -26,9 +26,9 @@ public class WebSite implements Parcelable {
     @Transient
     public List<BookInformation> books;
 
-    @Generated(hash = 1172638008)
-    public WebSite(Long id, String name, String url, String decode,
-                   Integer delayMill, Integer isDefault, String searchUrl, Long parent) {
+    @Generated(hash = 1521659554)
+    public WebSite(Long id, String name, String url, String decode, Integer delayMill,
+                   Integer isDefault, String searchUrl, String hotUrl, Long parent) {
         this.id = id;
         this.name = name;
         this.url = url;
@@ -36,6 +36,7 @@ public class WebSite implements Parcelable {
         this.delayMill = delayMill;
         this.isDefault = isDefault;
         this.searchUrl = searchUrl;
+        this.hotUrl = hotUrl;
         this.parent = parent;
     }
 
@@ -45,9 +46,10 @@ public class WebSite implements Parcelable {
 
     /**
      * 历史记录-临时数据
+     *
      * @param name
      */
-    public WebSite(String name){
+    public WebSite(String name) {
         this.id = -1L;
         this.name = name;
     }
@@ -72,6 +74,7 @@ public class WebSite implements Parcelable {
             isDefault = in.readInt();
         }
         searchUrl = in.readString();
+        hotUrl = in.readString();
         if (in.readByte() == 0) {
             parent = null;
         } else {
@@ -156,6 +159,14 @@ public class WebSite implements Parcelable {
         this.searchUrl = searchUrl;
     }
 
+    public String getHotUrl() {
+        return this.hotUrl;
+    }
+
+    public void setHotUrl(String hotUrl) {
+        this.hotUrl = hotUrl;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -185,6 +196,7 @@ public class WebSite implements Parcelable {
             dest.writeInt(isDefault);
         }
         dest.writeString(searchUrl);
+        dest.writeString(hotUrl);
         if (parent == null) {
             dest.writeByte((byte) 0);
         } else {

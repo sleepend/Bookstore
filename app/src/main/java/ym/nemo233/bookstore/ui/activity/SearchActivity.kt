@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.top_bar_search.*
 import ym.nemo233.bookstore.R
 import ym.nemo233.bookstore.basic.SearchBooksView
 import ym.nemo233.bookstore.presenter.SearchPresenter
-import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.WebSite
+import ym.nemo233.bookstore.ui.fragments.HotBooksFragment
 import ym.nemo233.bookstore.ui.fragments.SearchTipsFragment
 import ym.nemo233.framework.YMMVPActivity
 
@@ -36,10 +36,10 @@ class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
         topbar_search.setOnClickListener {
             //搜索
             val keywords = topbar_search_view.text.toString()
-            if(keywords.isEmpty()){
+            if (keywords.isEmpty()) {
                 return@setOnClickListener
             }
-
+            SearchResultActivity.skipTo(this@SearchActivity, keywords)
         }
     }
 
@@ -52,8 +52,13 @@ class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
         search_view_pager.adapter = object : FragmentStateAdapter(this) {
             override fun getItemCount(): Int = data.size
 
-            override fun createFragment(position: Int): Fragment =
-                SearchTipsFragment.getInstance(data[position])
+            override fun createFragment(position: Int): Fragment {
+                return if (position == 0) {
+                    SearchTipsFragment.getInstance()
+                } else {
+                    HotBooksFragment.getInstance(data[position])
+                }
+            }
         }
         TabLayoutMediator(
             search_tab_layout,
@@ -66,11 +71,6 @@ class SearchActivity : YMMVPActivity<SearchPresenter>(), SearchBooksView {
         search_view_pager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             //滑动切换事件
         })
-    }
-
-
-    override fun onResultBySearch(result: List<BookInformation>?) {
-
     }
 
 }
