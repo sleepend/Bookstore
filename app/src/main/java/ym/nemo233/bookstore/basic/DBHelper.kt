@@ -1,7 +1,6 @@
 package ym.nemo233.bookstore.basic
 
 import ym.nemo233.bookstore.sqlite.*
-import ym.nemo233.bookstore.utils.Te
 import ym.nemo233.framework.utils.L
 
 object DBHelper {
@@ -163,6 +162,10 @@ object DBHelper {
             first.stamp = System.currentTimeMillis()
             historyQueryDao.update(first)
         }
+    }
+
+    fun loadBooks(): MutableList<BookInformation> {
+        return bookInformationDao.loadAll()
     }
 
 

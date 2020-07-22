@@ -4,6 +4,10 @@ import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.Chapter
 import ym.nemo233.bookstore.sqlite.WebSite
 
+interface MainView {
+    fun onLoadLocalBooks(books: MutableList<BookInformation>)
+}
+
 interface ReaderView {
     fun onLoadBookByBookcase(
         chapter: Chapter?,
