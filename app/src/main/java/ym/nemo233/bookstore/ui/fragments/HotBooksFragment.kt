@@ -62,18 +62,17 @@ class HotBooksFragment : YMFragment() {
         Thread {
             val cache = DBHelper.loadLocalHotBooks(webSite)
             val now = System.currentTimeMillis()
-//            if (cache == null || cache.isEmpty() || now - cache.first().stamp > 24 * 60 * 60 * 1000) {
-            //一天只请求一次
-            L.d("添加新请求,获得数据 ${webSite.name}")
-            val siteParser = SiteParseFactory.create(webSite)
-            val books = siteParser.loadHotBooks()
-            updateHotBooks(books)
-            //缓存列表
-            DBHelper.saveHotBooks(webSite, books)
-//            } else {
-//                L.d("使用缓存数据 ${webSite.name} ${cache.first().stamp}")
-//                updateHotBooks(cache)
-//            }
+            if (cache == null || cache.isEmpty() || now - cache.first().stamp > 60 * 60 * 1000) {
+                //1小时只请求一次
+                val siteParser = SiteParseFactory.create(webSite)
+                val books = siteParser.loadHotBooks()
+                updateHotBooks(books)
+                //缓存列表
+                DBHelper.saveHotBooks(webSite, books)
+            } else {
+                SiteParseFactory.create(webSite)//只创建不执行,缓存当前解析器
+                updateHotBooks(cache)
+            }
         }.start()
     }
 

@@ -1,5 +1,6 @@
 package ym.nemo233.bookstore.parse
 
+import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.parse.impl.FqxsSiteParser
 import ym.nemo233.bookstore.sqlite.WebSite
 
@@ -16,7 +17,7 @@ object SiteParseFactory {
     }
 
     fun loadDefault(siteName: String): SiteParser? {
-        val webSite = webSites[siteName] ?: return null
+        val webSite = webSites[siteName] ?: DBHelper.loadWebsite(siteName) ?: return null
         return create(webSite)
     }
 

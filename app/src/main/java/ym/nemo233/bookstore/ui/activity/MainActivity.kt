@@ -37,12 +37,21 @@ class MainActivity : YMMVPActivity<MainPresenter>(), MainView {
         search.setOnClickListener {
             startActivity(Intent(this@MainActivity, SearchActivity::class.java))
         }
+        adapter.bindToRecyclerView(home_recycler)
+        adapter.setOnItemClickListener { adapter, _, position ->
+            val item = adapter.getItem(position) as BookInformation
+        }
     }
 
     override fun firstRequest() {
         super.firstRequest()
         mvp?.loadLocalBooks()
         DBHelper.initializationConfiguration()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mvp?.loadLocalBooks()
     }
 
     override fun onLoadLocalBooks(books: MutableList<BookInformation>) {

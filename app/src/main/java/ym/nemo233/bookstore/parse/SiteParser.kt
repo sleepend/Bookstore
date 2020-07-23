@@ -30,4 +30,6 @@ interface SiteParser {
      */
     fun loadChapter(chapter: Chapter): Chapter
 
+    fun checkUpdate(bookInformation: BookInformation)
+
 }

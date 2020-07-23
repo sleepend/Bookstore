@@ -37,6 +37,15 @@ object DBHelper {
         ).limit(1).offset(0).unique()
     }
 
+    /**
+     * 加载最新章节
+     */
+    fun loadLatestChapterByBook(bookInformation: BookInformation): Chapter {
+        return chapterDao.queryBuilder().where(ChapterDao.Properties.BiId.eq(bookInformation.id))
+            .orderDesc(ChapterDao.Properties.Index)
+            .limit(1).unique()
+    }
+
     fun loadBookcase(): List<BookInformation> {
         return bookInformationDao.loadAll()
     }
@@ -166,6 +175,24 @@ object DBHelper {
 
     fun loadBooks(): MutableList<BookInformation> {
         return bookInformationDao.loadAll()
+    }
+
+    fun loadWebsite(siteName: String): WebSite? =
+        webSiteDao.queryBuilder().where(WebSiteDao.Properties.Name.eq(siteName)).list().firstOrNull()
+
+    fun updateBook(bookInformation: BookInformation) {
+        bookInformationDao.updateInTx(bookInformation)
+    }
+
+    /**
+     * 返回书籍的id号
+     * @return if id == null 表示未添加到书架
+     */
+    fun loadBookId(bookInformation: BookInformation): Long? {
+        return bookInformationDao.queryBuilder().where(
+            BookInformationDao.Properties.Name.eq(bookInformation.name),
+            BookInformationDao.Properties.Auth.eq(bookInformation.auth)
+        ).unique()?.id
     }
 
 

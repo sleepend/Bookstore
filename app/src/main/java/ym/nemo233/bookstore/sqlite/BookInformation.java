@@ -21,13 +21,15 @@ public class BookInformation implements Parcelable {
     private String auth;//作者
     private String instr;//简介
     private String imageUrl;//封面
-    private String status; //状态
     private String className;//标签
+
+    private String status; //显示状态
+    private Boolean theEnd;//完结
 
     private String sourceUrl;//引用网页地址
     private String siteName;//来源站
-    private Integer currentChapter;//当前阅读章节
 
+    private Integer currentChapter;//当前阅读章节
     private String allChapterUrl;//所有章节地址
     private String newest;//最新章节
     private String newestUrl;//最新章节地址
@@ -40,17 +42,18 @@ public class BookInformation implements Parcelable {
     @Transient
     public List<Chapter> latest;
 
-    @Generated(hash = 649690406)
-    public BookInformation(Long id, String name, String auth, String instr, String imageUrl,
-                           String status, String className, String sourceUrl, String siteName, Integer currentChapter,
-                           String allChapterUrl, String newest, String newestUrl, String upt) {
+    @Generated(hash = 1842623945)
+    public BookInformation(Long id, String name, String auth, String instr, String imageUrl, String className,
+                           String status, Boolean theEnd, String sourceUrl, String siteName, Integer currentChapter, String allChapterUrl,
+                           String newest, String newestUrl, String upt) {
         this.id = id;
         this.name = name;
         this.auth = auth;
         this.instr = instr;
         this.imageUrl = imageUrl;
-        this.status = status;
         this.className = className;
+        this.status = status;
+        this.theEnd = theEnd;
         this.sourceUrl = sourceUrl;
         this.siteName = siteName;
         this.currentChapter = currentChapter;
@@ -81,6 +84,7 @@ public class BookInformation implements Parcelable {
         this.imageUrl = imageUrl;
         this.className = null;
         this.status = null;
+        this.theEnd = false;
         this.sourceUrl = sourceUrl;
         this.siteName = null;
         this.currentChapter = -1;
@@ -109,8 +113,10 @@ public class BookInformation implements Parcelable {
         auth = in.readString();
         instr = in.readString();
         imageUrl = in.readString();
-        status = in.readString();
         className = in.readString();
+        status = in.readString();
+        byte tmpTheEnd = in.readByte();
+        theEnd = tmpTheEnd == 0 ? null : tmpTheEnd == 1;
         sourceUrl = in.readString();
         siteName = in.readString();
         if (in.readByte() == 0) {
@@ -250,6 +256,14 @@ public class BookInformation implements Parcelable {
         this.allChapterUrl = allChapterUrl;
     }
 
+    public Boolean getTheEnd() {
+        return this.theEnd;
+    }
+
+    public void setTheEnd(Boolean theEnd) {
+        this.theEnd = theEnd;
+    }
+
     /**
      * To-many relationship, resolved on first access (and after reset).
      * Changes to to-many relations are not persisted, make changes to the target entity.
@@ -342,8 +356,9 @@ public class BookInformation implements Parcelable {
         dest.writeString(auth);
         dest.writeString(instr);
         dest.writeString(imageUrl);
-        dest.writeString(status);
         dest.writeString(className);
+        dest.writeString(status);
+        dest.writeByte((byte) (theEnd == null ? 0 : theEnd ? 1 : 2));
         dest.writeString(sourceUrl);
         dest.writeString(siteName);
         if (currentChapter == null) {

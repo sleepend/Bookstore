@@ -27,15 +27,16 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
         public final static Property Auth = new Property(2, String.class, "auth", false, "AUTH");
         public final static Property Instr = new Property(3, String.class, "instr", false, "INSTR");
         public final static Property ImageUrl = new Property(4, String.class, "imageUrl", false, "IMAGE_URL");
-        public final static Property Status = new Property(5, String.class, "status", false, "STATUS");
-        public final static Property ClassName = new Property(6, String.class, "className", false, "CLASS_NAME");
-        public final static Property SourceUrl = new Property(7, String.class, "sourceUrl", false, "SOURCE_URL");
-        public final static Property SiteName = new Property(8, String.class, "siteName", false, "SITE_NAME");
-        public final static Property CurrentChapter = new Property(9, Integer.class, "currentChapter", false, "CURRENT_CHAPTER");
-        public final static Property AllChapterUrl = new Property(10, String.class, "allChapterUrl", false, "ALL_CHAPTER_URL");
-        public final static Property Newest = new Property(11, String.class, "newest", false, "NEWEST");
-        public final static Property NewestUrl = new Property(12, String.class, "newestUrl", false, "NEWEST_URL");
-        public final static Property Upt = new Property(13, String.class, "upt", false, "UPT");
+        public final static Property ClassName = new Property(5, String.class, "className", false, "CLASS_NAME");
+        public final static Property Status = new Property(6, String.class, "status", false, "STATUS");
+        public final static Property TheEnd = new Property(7, Boolean.class, "theEnd", false, "THE_END");
+        public final static Property SourceUrl = new Property(8, String.class, "sourceUrl", false, "SOURCE_URL");
+        public final static Property SiteName = new Property(9, String.class, "siteName", false, "SITE_NAME");
+        public final static Property CurrentChapter = new Property(10, Integer.class, "currentChapter", false, "CURRENT_CHAPTER");
+        public final static Property AllChapterUrl = new Property(11, String.class, "allChapterUrl", false, "ALL_CHAPTER_URL");
+        public final static Property Newest = new Property(12, String.class, "newest", false, "NEWEST");
+        public final static Property NewestUrl = new Property(13, String.class, "newestUrl", false, "NEWEST_URL");
+        public final static Property Upt = new Property(14, String.class, "upt", false, "UPT");
     }
 
     private DaoSession daoSession;
@@ -59,15 +60,16 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
                 "\"AUTH\" TEXT," + // 2: auth
                 "\"INSTR\" TEXT," + // 3: instr
                 "\"IMAGE_URL\" TEXT," + // 4: imageUrl
-                "\"STATUS\" TEXT," + // 5: status
-                "\"CLASS_NAME\" TEXT," + // 6: className
-                "\"SOURCE_URL\" TEXT," + // 7: sourceUrl
-                "\"SITE_NAME\" TEXT," + // 8: siteName
-                "\"CURRENT_CHAPTER\" INTEGER," + // 9: currentChapter
-                "\"ALL_CHAPTER_URL\" TEXT," + // 10: allChapterUrl
-                "\"NEWEST\" TEXT," + // 11: newest
-                "\"NEWEST_URL\" TEXT," + // 12: newestUrl
-                "\"UPT\" TEXT);"); // 13: upt
+                "\"CLASS_NAME\" TEXT," + // 5: className
+                "\"STATUS\" TEXT," + // 6: status
+                "\"THE_END\" INTEGER," + // 7: theEnd
+                "\"SOURCE_URL\" TEXT," + // 8: sourceUrl
+                "\"SITE_NAME\" TEXT," + // 9: siteName
+                "\"CURRENT_CHAPTER\" INTEGER," + // 10: currentChapter
+                "\"ALL_CHAPTER_URL\" TEXT," + // 11: allChapterUrl
+                "\"NEWEST\" TEXT," + // 12: newest
+                "\"NEWEST_URL\" TEXT," + // 13: newestUrl
+                "\"UPT\" TEXT);"); // 14: upt
     }
 
     /** Drops the underlying database table. */
@@ -105,49 +107,54 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
             stmt.bindString(5, imageUrl);
         }
  
-        String status = entity.getStatus();
-        if (status != null) {
-            stmt.bindString(6, status);
-        }
- 
         String className = entity.getClassName();
         if (className != null) {
-            stmt.bindString(7, className);
+            stmt.bindString(6, className);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(7, status);
+        }
+ 
+        Boolean theEnd = entity.getTheEnd();
+        if (theEnd != null) {
+            stmt.bindLong(8, theEnd ? 1L: 0L);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(8, sourceUrl);
+            stmt.bindString(9, sourceUrl);
         }
  
         String siteName = entity.getSiteName();
         if (siteName != null) {
-            stmt.bindString(9, siteName);
+            stmt.bindString(10, siteName);
         }
  
         Integer currentChapter = entity.getCurrentChapter();
         if (currentChapter != null) {
-            stmt.bindLong(10, currentChapter);
+            stmt.bindLong(11, currentChapter);
         }
  
         String allChapterUrl = entity.getAllChapterUrl();
         if (allChapterUrl != null) {
-            stmt.bindString(11, allChapterUrl);
+            stmt.bindString(12, allChapterUrl);
         }
  
         String newest = entity.getNewest();
         if (newest != null) {
-            stmt.bindString(12, newest);
+            stmt.bindString(13, newest);
         }
  
         String newestUrl = entity.getNewestUrl();
         if (newestUrl != null) {
-            stmt.bindString(13, newestUrl);
+            stmt.bindString(14, newestUrl);
         }
  
         String upt = entity.getUpt();
         if (upt != null) {
-            stmt.bindString(14, upt);
+            stmt.bindString(15, upt);
         }
     }
 
@@ -180,49 +187,54 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
             stmt.bindString(5, imageUrl);
         }
  
-        String status = entity.getStatus();
-        if (status != null) {
-            stmt.bindString(6, status);
-        }
- 
         String className = entity.getClassName();
         if (className != null) {
-            stmt.bindString(7, className);
+            stmt.bindString(6, className);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(7, status);
+        }
+ 
+        Boolean theEnd = entity.getTheEnd();
+        if (theEnd != null) {
+            stmt.bindLong(8, theEnd ? 1L: 0L);
         }
  
         String sourceUrl = entity.getSourceUrl();
         if (sourceUrl != null) {
-            stmt.bindString(8, sourceUrl);
+            stmt.bindString(9, sourceUrl);
         }
  
         String siteName = entity.getSiteName();
         if (siteName != null) {
-            stmt.bindString(9, siteName);
+            stmt.bindString(10, siteName);
         }
  
         Integer currentChapter = entity.getCurrentChapter();
         if (currentChapter != null) {
-            stmt.bindLong(10, currentChapter);
+            stmt.bindLong(11, currentChapter);
         }
  
         String allChapterUrl = entity.getAllChapterUrl();
         if (allChapterUrl != null) {
-            stmt.bindString(11, allChapterUrl);
+            stmt.bindString(12, allChapterUrl);
         }
  
         String newest = entity.getNewest();
         if (newest != null) {
-            stmt.bindString(12, newest);
+            stmt.bindString(13, newest);
         }
  
         String newestUrl = entity.getNewestUrl();
         if (newestUrl != null) {
-            stmt.bindString(13, newestUrl);
+            stmt.bindString(14, newestUrl);
         }
  
         String upt = entity.getUpt();
         if (upt != null) {
-            stmt.bindString(14, upt);
+            stmt.bindString(15, upt);
         }
     }
 
@@ -245,15 +257,16 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // auth
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // instr
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // imageUrl
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // status
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // className
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // sourceUrl
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // siteName
-            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // currentChapter
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // allChapterUrl
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // newest
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // newestUrl
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // upt
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // className
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // status
+            cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0, // theEnd
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // sourceUrl
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // siteName
+            cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10), // currentChapter
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // allChapterUrl
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // newest
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // newestUrl
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // upt
         );
         return entity;
     }
@@ -265,15 +278,16 @@ public class BookInformationDao extends AbstractDao<BookInformation, Long> {
         entity.setAuth(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setInstr(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setImageUrl(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setStatus(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setClassName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setSourceUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setSiteName(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setCurrentChapter(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
-        entity.setAllChapterUrl(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setNewest(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setNewestUrl(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setUpt(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setClassName(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setStatus(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setTheEnd(cursor.isNull(offset + 7) ? null : cursor.getShort(offset + 7) != 0);
+        entity.setSourceUrl(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSiteName(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setCurrentChapter(cursor.isNull(offset + 10) ? null : cursor.getInt(offset + 10));
+        entity.setAllChapterUrl(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setNewest(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setNewestUrl(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setUpt(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     @Override

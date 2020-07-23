@@ -2,6 +2,7 @@ package ym.nemo233.bookstore.parse.impl
 
 import org.jsoup.Connection
 import org.jsoup.Jsoup
+import ym.nemo233.bookstore.basic.DBHelper
 import ym.nemo233.bookstore.parse.SiteParser
 import ym.nemo233.bookstore.sqlite.BookInformation
 import ym.nemo233.bookstore.sqlite.Chapter
@@ -32,9 +33,11 @@ class FqxsSiteParser(private val webSite: WebSite) : SiteParser {
             bookInformation.className =
                 head.select("meta[property=og:novel:category]").attr("content")
             bookInformation.status = head.select("meta[property=og:novel:status]").attr("content")
+            bookInformation.theEnd = bookInformation.status == "完结"
 
             bookInformation.sourceUrl = hotBook.sourceUrl
             bookInformation.siteName = webSite.name
+            bookInformation.currentChapter = -1
 
             bookInformation.newest =
                 head.select("meta[property=og:novel:latest_chapter_name]").attr("content")
@@ -176,4 +179,33 @@ class FqxsSiteParser(private val webSite: WebSite) : SiteParser {
         }
     }
 
+    /**
+     * 检查更新
+     */
+    override fun checkUpdate(bookInformation: BookInformation) {
+        val html = Jsoup.parse(
+            URL(bookInformation.allChapterUrl).openStream(),
+            webSite.decode,
+            bookInformation.allChapterUrl
+        )
+        val chapter = DBHelper.loadLatestChapterByBook(bookInformation)
+        val index = chapter.index
+        val newChapters = ArrayList<Chapter>()
+        html.body().select("ul[class=chapter]").select("a").forEachIndexed { i, li ->
+            if (i > index) {
+                val href = li.attr("href")
+                val tag = li.text()
+                val url = if (href.startsWith("/")) {
+                    webSite.url + href
+                } else href
+                newChapters.add(Chapter(null, bookInformation.id, index + i, tag, url, ""))
+            }
+        }
+        if (newChapters.isNotEmpty()) {
+            bookInformation.newest = newChapters.last().name
+            bookInformation.newestUrl = newChapters.last().url
+            DBHelper.updateBook(bookInformation)
+            DBHelper.saveChapters(newChapters)//保存最新章节
+        }
+    }
 }

@@ -17,36 +17,20 @@ class BookDetailsPresenter(view: BookDetailsView) : BasePresenter<BookDetailsVie
     fun loadBookDetails(hotBook: HotBook) {
         Thread {
             val siteParser = SiteParseFactory.loadDefault(hotBook.siteTag)
-            val cache = DBHelper.loadLocalCacheBook(hotBook)
-            if (cache == null) {//未添加到书架
-                val bookInformation = siteParser?.loadBookInformation(hotBook)
-                if (bookInformation == null) {
-                    L.d("[log] 加载网络数据失败")
-                    mvpView?.onLoadError()
-                } else {
-                    mvpView?.onUpdateBookInfo(bookInformation)
-                }
+            L.d("[log-parser] $siteParser")
+            val bookInformation = siteParser?.loadBookInformation(hotBook)
+            if (bookInformation == null) {
+                L.d("[log] 加载网络数据失败")
+                mvpView?.onLoadError()
             } else {
-                //加载最新15节&加载失败时,则加载网页数据
-                cache.latest = DBHelper.loadLocalChapterByBook(cache)
-                if (cache.latest == null || cache.latest.isEmpty()) {
-                    val bookInformation = siteParser?.loadBookInformation(hotBook)
-                    if (bookInformation == null) {
-                        L.d("[log] 本地基本数据,章节数据加载失败")
-                        mvpView?.onLoadError()
-                    } else {
-                        mvpView?.onUpdateBookInfo(bookInformation)
-                    }
-                } else {
-                    mvpView?.onUpdateBookInfo(cache)
-                }
+                bookInformation.id = DBHelper.loadBookId(bookInformation)
+                mvpView?.onUpdateBookInfo(bookInformation)
             }
         }.start()
     }
 
     /**
      * 添加到书架
-     * 1594888873,1594968298,1595216849
      */
     fun addToBookcase(bookInformation: BookInformation) {
         Thread {
