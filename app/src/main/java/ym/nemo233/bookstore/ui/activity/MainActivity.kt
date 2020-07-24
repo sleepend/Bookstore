@@ -40,6 +40,7 @@ class MainActivity : YMMVPActivity<MainPresenter>(), MainView {
         adapter.bindToRecyclerView(home_recycler)
         adapter.setOnItemClickListener { adapter, _, position ->
             val item = adapter.getItem(position) as BookInformation
+            ReaderActivity.skipTo(this@MainActivity, item)
         }
     }
 
